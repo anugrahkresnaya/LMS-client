@@ -5,12 +5,13 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 
 export default function Navbar() {
-  const [token, setToken] = useState("")
+  const [token, setToken] = useState(null)
 
   useEffect(() => {
     setToken(sessionStorage.getItem('Access Token'))
   }, [])
 
+  console.log('token: ', token)
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1">
@@ -21,10 +22,9 @@ export default function Navbar() {
           <ul className="menu menu-horizontal px-1">
             <li><Link href="#">Courses</Link></li>
             <li><Link href="#">Contact</Link></li>
-            {!token && <li><Link href="/signin">Sign In</Link></li>}
           </ul>
         </div>
-        {token && (
+        {token ? (
           <div>
             <div className="dropdown dropdown-end">
               <label tabIndex={0} className="btn btn-ghost btn-circle">
@@ -60,6 +60,10 @@ export default function Navbar() {
                 <li><Link href="#">Logout</Link></li>
               </ul>
             </div>
+          </div>
+        ) : (
+          <div>
+            <Link href="/signin">Sign In</Link>
           </div>
         )}
       </div>
