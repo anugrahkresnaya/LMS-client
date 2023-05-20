@@ -3,10 +3,12 @@ import axios from 'axios'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import courseImage from '../public/course.jpg'
 
 export default function Home() {
   const [token, setToken] = useState(null)
   const [idUser, setIdUser] = useState(null)
+  const [userData, setUserData] = useState([])
 
   useEffect(() => {
     setToken(sessionStorage.getItem('Access Token'))
@@ -16,18 +18,87 @@ export default function Home() {
         "Authorization": `Bearer ${token}`
       }
     })
-    .then(res => console.log(res))
+    .then(res => {
+      console.log('ini', res)
+      setUserData(res.data.data)
+    })
     .catch(err => console.log(err.message))
   }, [idUser, token])
+
+  console.log('user data', userData)
+
+  const renderUser = userData.map(res => {
+    console.log('res', res)
+    return (
+      <>
+        <h1>Hi, {res.email}</h1>
+        <h2>What do you want to learn?</h2>
+      </>
+    )
+  })
 
   const isLoggedIn = token
   console.log(isLoggedIn)
   const router = useRouter()
   return (
     <div>
-      <h1>Home Page</h1>
-      {isLoggedIn && <h1>hi im logged in</h1>}
+      <div className="hero min-h-screen" style={{ backgroundImage: `url(/test.jpg)` }}>
+        <div className="hero-overlay bg-opacity-60"></div>
+        <div className="hero-content text-center text-neutral-content">
+          <div className="max-w-md">
+            <h1 className="mb-5 text-5xl font-bold">Hello there</h1>
+            <p className="mb-5">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
+            <button className="btn btn-primary">Get Started</button>
+          </div>
+        </div>
+      </div>
+      {isLoggedIn && renderUser}
       <button onClick={() => router.push('/dashboard')}>dashboard</button>
+      <div>
+        <h1 className='ml-5 mt-5'>Courses</h1>
+        <div className='flex justify-between m-5'>
+          <div className="card w-96 bg-base-100 shadow-xl">
+            <figure><Image src={courseImage} alt="Course" /></figure>
+            <div className="card-body">
+              <h2 className="card-title">Shoes!</h2>
+              <p>If a dog chews shoes whose shoes does he choose?</p>
+              <div className="card-actions justify-end">
+                <button className="btn btn-primary">Buy Now</button>
+              </div>
+            </div>
+          </div>
+          <div className="card w-96 bg-base-100 shadow-xl">
+          <figure><Image src={courseImage} alt="Course" /></figure>
+            <div className="card-body">
+              <h2 className="card-title">Shoes!</h2>
+              <p>If a dog chews shoes whose shoes does he choose?</p>
+              <div className="card-actions justify-end">
+                <button className="btn btn-primary">Buy Now</button>
+              </div>
+            </div>
+          </div>
+          <div className="card w-96 bg-base-100 shadow-xl">
+            <figure><Image src={courseImage} alt="Course" /></figure>
+            <div className="card-body">
+              <h2 className="card-title">Shoes!</h2>
+              <p>If a dog chews shoes whose shoes does he choose?</p>
+              <div className="card-actions justify-end">
+                <button className="btn btn-primary">Buy Now</button>
+              </div>
+            </div>
+          </div>
+          <div className="card w-96 bg-base-100 shadow-xl">
+            <figure><Image src={courseImage} alt="Course" /></figure>
+            <div className="card-body">
+              <h2 className="card-title">Shoes!</h2>
+              <p>If a dog chews shoes whose shoes does he choose?</p>
+              <div className="card-actions justify-end">
+                <button className="btn btn-primary">Buy Now</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
