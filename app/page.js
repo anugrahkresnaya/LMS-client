@@ -31,8 +31,8 @@ export default function Home() {
     console.log('res', res)
     return (
       <>
-        <h1>Hi, {res.email}</h1>
-        <h2>What do you want to learn?</h2>
+        <h1 className='ml-5'>Hi, {res.email}</h1>
+        <h2 className='ml-5'>What do you want to learn?</h2>
       </>
     )
   })
@@ -56,42 +56,46 @@ export default function Home() {
       <button onClick={() => router.push('/dashboard')}>dashboard</button>
       <div>
         <h1 className='ml-5 mt-5'>Courses</h1>
-        <div className='flex justify-between m-5'>
-          <div className="card w-96 bg-base-100 shadow-xl">
+        <div className='flex justify-center m-5'>
+          <div className="card w-96 bg-base-100 m-5 shadow-xl">
             <figure><Image src={courseImage} alt="Course" /></figure>
-            <div className="card-body">
-              <h2 className="card-title">Shoes!</h2>
-              <p>If a dog chews shoes whose shoes does he choose?</p>
+            <div className="card-body bg-base-300">
+              <h2 className="card-title">Course Name</h2>
+              <p>User Name</p>
+              <h3>Rp 99.000</h3>
               <div className="card-actions justify-end">
                 <button className="btn btn-primary">Buy Now</button>
               </div>
             </div>
           </div>
-          <div className="card w-96 bg-base-100 shadow-xl">
+          <div className="card w-96 bg-base-100 m-5 shadow-xl">
           <figure><Image src={courseImage} alt="Course" /></figure>
-            <div className="card-body">
-              <h2 className="card-title">Shoes!</h2>
-              <p>If a dog chews shoes whose shoes does he choose?</p>
+            <div className="card-body bg-base-300">
+              <h2 className="card-title">Course Name</h2>
+              <p>User Name</p>
+              <h3>Rp 99.000</h3>
               <div className="card-actions justify-end">
                 <button className="btn btn-primary">Buy Now</button>
               </div>
             </div>
           </div>
-          <div className="card w-96 bg-base-100 shadow-xl">
+          <div className="card w-96 bg-base-100 m-5 shadow-xl">
             <figure><Image src={courseImage} alt="Course" /></figure>
-            <div className="card-body">
-              <h2 className="card-title">Shoes!</h2>
-              <p>If a dog chews shoes whose shoes does he choose?</p>
+            <div className="card-body bg-base-300">
+              <h2 className="card-title">Course Name</h2>
+              <p>User Name</p>
+              <h3>Rp 99.000</h3>
               <div className="card-actions justify-end">
                 <button className="btn btn-primary">Buy Now</button>
               </div>
             </div>
           </div>
-          <div className="card w-96 bg-base-100 shadow-xl">
+          <div className="card w-96 bg-base-100 m-5 shadow-xl">
             <figure><Image src={courseImage} alt="Course" /></figure>
-            <div className="card-body">
-              <h2 className="card-title">Shoes!</h2>
-              <p>If a dog chews shoes whose shoes does he choose?</p>
+            <div className="card-body bg-base-300">
+              <h2 className="card-title">Course Name</h2>
+              <p>User Name</p>
+              <h3>Rp 99.000</h3>
               <div className="card-actions justify-end">
                 <button className="btn btn-primary">Buy Now</button>
               </div>
