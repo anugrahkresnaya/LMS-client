@@ -1,8 +1,10 @@
 'use client'
 import axios from "axios"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import Swal from "sweetalert2"
+import { Context } from "@/context"
+
 
 export default function SignUp() {
   const router = useRouter()
@@ -11,15 +13,20 @@ export default function SignUp() {
     password: "",
   })
 
-  const handleSubmit = (e) => {
+  const { state: { user } } = useContext(Context)
+
+  useEffect(() => {
+    if(user !== null) router.push("/")
+  }, [router, user])
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // const form = e.currentTarget;
-    axios.post('http://localhost:3001/register', {
-      email: values.email,
-      password: values.password
-    })
-    .then(res => {
-      // console.log(res.data)
+
+    try {
+      const { data } = await axios.post('http://localhost:3001/register', {
+        email: values.email,
+        password: values.password
+      })
       Swal.fire({
         position: "top-end",
         title: "Successfull!",
@@ -28,15 +35,14 @@ export default function SignUp() {
         showConfirmButton: false,
         timer: 1500,
       })
-      router.push('/signin')
-    })
-    .catch(err => {
-      const errMsg = err.response?.data.error.message
+      router.push("/signin")
+    } catch (error) {
+      const errMsg = error.response?.data.error.message
       console.log(errMsg)
       if(errMsg !== undefined) {
         Swal.fire('error', errMsg, 'error')
       }
-    })
+    }
   }
 
   return (
