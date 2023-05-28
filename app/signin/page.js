@@ -1,7 +1,7 @@
 'use client'
 // import Image from "next/image"
 import axios from "axios"
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import Swal from 'sweetalert2'
 import { useRouter } from "next/navigation"
 import { Context } from "@/context"
@@ -14,9 +14,12 @@ export default function Login() {
   })
 
   // state
-  const {state, dispatch} = useContext(Context)
+  const {state: { user }, dispatch} = useContext(Context)
+  // const { user } = state
 
-  console.log('STATE', state)
+  useEffect(() => {
+    if(user !== null) router.push("/")
+  }, [router, user])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
