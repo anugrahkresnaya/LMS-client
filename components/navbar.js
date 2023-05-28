@@ -23,7 +23,7 @@ export default function Navbar() {
     dispatch({ type: "LOGOUT" })
     window.localStorage.removeItem("user")
     // const {data} = await axios.get('http://localhost:3001/logout')
-    Router.push("/signin")
+    router.push("/signin")
   }
 
   console.log('token: ', token)
