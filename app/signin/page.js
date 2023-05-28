@@ -1,11 +1,10 @@
 'use client'
 // import Image from "next/image"
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useState, useContext } from "react"
 import Swal from 'sweetalert2'
-// import { useRouter } from "next/navigation"
-import { usePathname, useRouter } from "next/navigation"
-import { Router } from "next/router"
+import { useRouter } from "next/navigation"
+import { Context } from "@/context"
 
 export default function Login() {
   const router = useRouter()
@@ -14,14 +13,28 @@ export default function Login() {
     password: "",
   })
 
-  const handleSubmit = (e) => {
+  // state
+  const {state, dispatch} = useContext(Context)
+
+  console.log('STATE', state)
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
     // const form = e.currentTarget;
-    axios.post('http://localhost:3001/login', {
-      email: values.email,
-      password: values.password
-    })
-    .then(res => {
+    try {
+      const { data } = await axios.post('http://localhost:3001/login', {
+        email: values.email,
+        password: values.password
+      })
+
+      dispatch({
+        type: "LOGIN",
+        payload: data,
+      })
+
+      // save in local storage
+      window.localStorage.setItem('user', JSON.stringify(data))
+
       Swal.fire({
         position: "top-end",
         title: "Successfull!",
@@ -30,22 +43,13 @@ export default function Login() {
         showConfirmButton: false,
         timer: 2000,
       })
-      sessionStorage.setItem('Access Token', res.data.accessToken)
-      sessionStorage.setItem('idUser', res.data.id)
-      sessionStorage.setItem('user', res.data.user)
-      router.push('/')
-      console.log(res.data)
-    })
-    .catch(err => {
-      const errMsg = err.response?.data.error?.message
+      router.push("/")
+    } catch (error) {
+      const errMsg = error.response?.data.error?.message
       if(errMsg !== undefined) {
         Swal.fire('error', errMsg, 'error')
       }
-    })
-  }
-
-  const reload = () => {
-    Router.refresh
+    }
   }
 
   return (
@@ -80,7 +84,7 @@ export default function Login() {
                 </div> */}
                   <a href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</a>
                 </div>
-                <button type="submit" onClick={reload} className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
+                <button type="submit" className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Don’t have an account yet? <a href="/signup" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</a>
                 </p>
