@@ -2,14 +2,29 @@
 import Image from "next/image"
 import photo from '../public/png_dc_kaze-12.png'
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
+import { Context } from "@/context"
+import { useRouter } from "next/navigation"
+import axios from "axios"
 
 export default function Navbar() {
   const [token, setToken] = useState(null)
 
+  const { state, dispatch } = useContext(Context)
+  const { user } = state
+
+  const router = useRouter()
+
   useEffect(() => {
     setToken(sessionStorage.getItem('Access Token'))
   }, [])
+
+  const logout = async () => {
+    dispatch({ type: "LOGOUT" })
+    window.localStorage.removeItem("user")
+    // const {data} = await axios.get('http://localhost:3001/logout')
+    Router.push("/signin")
+  }
 
   console.log('token: ', token)
   return (
@@ -24,7 +39,7 @@ export default function Navbar() {
             <li><Link href="#">Contact</Link></li>
           </ul>
         </div>
-        {token ? (
+        {user ? (
           <div>
             <div className="dropdown dropdown-end">
               <label tabIndex={0} className="btn btn-ghost btn-circle">
@@ -57,7 +72,7 @@ export default function Navbar() {
                   </Link>
                 </li>
                 <li><Link href="#">Settings</Link></li>
-                <li><Link href="#">Logout</Link></li>
+                <li><button onClick={logout}>Logout</button></li>
               </ul>
             </div>
           </div>
