@@ -6,6 +6,7 @@ import { useEffect, useState, useContext } from "react"
 import { Context } from "@/context"
 import { useRouter } from "next/navigation"
 import axios from "axios"
+import Swal from "sweetalert2"
 
 export default function Navbar() {
   const [token, setToken] = useState(null)
@@ -22,7 +23,17 @@ export default function Navbar() {
   const logout = async () => {
     dispatch({ type: "LOGOUT" })
     window.localStorage.removeItem("user")
-    // const {data} = await axios.get('http://localhost:3001/logout')
+    await axios.get('http://localhost:3001/logout', {
+      withCredentials: true,
+      credentials: 'same-origin'
+    })
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: 'Sign Out success',
+      showConfirmButton: false,
+      timer: 1500
+    })
     router.push("/signin")
   }
 
@@ -37,9 +48,10 @@ export default function Navbar() {
           <ul className="menu menu-horizontal px-1">
             <li><Link href="#">Courses</Link></li>
             <li><Link href="#">Contact</Link></li>
+            {user === null && <li><Link href="/signin">Sign In</Link></li>}
           </ul>
         </div>
-        {user ? (
+        {user !== null && (
           <div>
             <div className="dropdown dropdown-end">
               <label tabIndex={0} className="btn btn-ghost btn-circle">
@@ -72,13 +84,9 @@ export default function Navbar() {
                   </Link>
                 </li>
                 <li><Link href="#">Settings</Link></li>
-                <li><button onClick={logout}>Logout</button></li>
+                <li><button onClick={logout}>Sign Out</button></li>
               </ul>
             </div>
-          </div>
-        ) : (
-          <div>
-            <Link href="/signin">Sign In</Link>
           </div>
         )}
       </div>
