@@ -28,6 +28,9 @@ export default function Login() {
       const { data } = await axios.post('http://localhost:3001/login', {
         email: values.email,
         password: values.password
+      }, {
+        withCredentials: true,
+        credentials: 'include'
       })
 
       dispatch({
