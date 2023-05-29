@@ -2,23 +2,16 @@
 import Image from "next/image"
 import photo from '../public/png_dc_kaze-12.png'
 import Link from "next/link"
-import { useEffect, useState, useContext } from "react"
+import { useContext } from "react"
 import { Context } from "@/context"
 import { useRouter } from "next/navigation"
 import axios from "axios"
 import Swal from "sweetalert2"
 
 export default function Navbar() {
-  const [token, setToken] = useState(null)
-
-  const { state, dispatch } = useContext(Context)
-  const { user } = state
+  const { state: { user }, dispatch } = useContext(Context)
 
   const router = useRouter()
-
-  useEffect(() => {
-    setToken(sessionStorage.getItem('Access Token'))
-  }, [])
 
   const logout = async () => {
     dispatch({ type: "LOGOUT" })
@@ -37,7 +30,6 @@ export default function Navbar() {
     router.push("/signin")
   }
 
-  console.log('token: ', token)
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1">
