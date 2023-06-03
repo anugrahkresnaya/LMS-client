@@ -64,14 +64,14 @@ const Provider = ({children}) => {
     }
   )
 
-  useEffect(() => {
-    const getCsrfToken = async () => {
-      const { data } = await axios.get("http://localhost:3001/csrf-token")
-      // console.log('csrf', data)
-      axios.defaults.headers["X-CSRF-Token"] = data.getCsrfToken
-    }
-    getCsrfToken()
-  }, [])
+  // useEffect(() => {
+  //   const getCsrfToken = async () => {
+  //     const { data } = await axios.get("http://localhost:3001/csrf-token")
+  //     // console.log('csrf', data)
+  //     axios.defaults.headers["X-CSRF-Token"] = data.getCsrfToken
+  //   }
+  //   getCsrfToken()
+  // }, [])
 
   return (
     <Context.Provider value={{state, dispatch}}>
