@@ -5,6 +5,8 @@ import { useContext, useEffect, useState } from 'react'
 import profileCover from "../../public/profile-cover.jpg"
 import { Context } from '@/context'
 import defaultPhoto from '../../public/default.jpg'
+import Swal from 'sweetalert2'
+import Link from 'next/link'
 
 export default function Profile() {
   const [hidden, setHidden] = useState(true)
@@ -13,7 +15,7 @@ export default function Profile() {
   const [lastName, setLastName] = useState("")
   const [birthDay, setBirthDay] = useState("")
   const [gender, setGender] = useState("")
-  const [phoneNumber, setPhoneNumber] = ("")
+  const [phoneNumber, setPhoneNumber] = useState("")
   const [photoProfile, setPhotoProfile] = useState(null)
 
   const {
@@ -70,20 +72,20 @@ export default function Profile() {
       })
       window.localStorage.setItem("user", JSON.stringify(data))
 
-      // Swal.fire({
-      //   position: "top-end",
-      //   title: "Successfull!",
-      //   icon: "success",
-      //   text: "Sign in Successfull",
-      //   showConfirmButton: false,
-      //   timer: 2000,
-      // })
+      Swal.fire({
+        position: "top-end",
+        title: "Successfull!",
+        icon: "success",
+        text: "Update Successfull",
+        showConfirmButton: false,
+        timer: 2000,
+      })
       // router.push("/")
     } catch (error) {
-      // const errMsg = error.response?.data.error?.message
-      // if(errMsg !== undefined) {
-      //   Swal.fire('error', errMsg, 'error')
-      // }
+      const errMsg = error.response?.data.error?.message
+      if(errMsg !== undefined) {
+        Swal.fire('error', errMsg, 'error')
+      }
       console.log("api error: ", error)
     }
   }
@@ -135,8 +137,8 @@ export default function Profile() {
                     <input type="text" name="email" id="" value={data.email} className='input input-bordered input-primary w-96' disabled />
                   </div>
                   <div className='flex flex-col  mr-5'>
-                    <label htmlFor="phone">Mobile Number</label>
-                    <input type="text" name="phone" id="" placeholder='Your mobile number' className='input input-bordered input-primary w-96' />
+                    <label htmlFor="phoneNumber">Mobile Number</label>
+                    <input type="text" name="phoneNumber" value={phoneNumber} onChange={(e) => {setPhoneNumber(e.target.value)}} placeholder="Your first name" id="phoneNumber" className='input input-bordered input-primary w-96' />
                   </div>
                 </div>
                 <div className='mb-5'>
@@ -164,7 +166,7 @@ export default function Profile() {
           <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
           <ul className="menu p-4 w-80 bg-base-100 text-base-content">
             <li><a>Sidebar Item 1</a></li>
-            <li><a>Sidebar Item 2</a></li>
+            <li><Link href="/profile/instructor">Instructor</Link></li>
           </ul>
         </div>
       </div>
