@@ -2,14 +2,19 @@
 import Image from "next/image"
 import photo from '../public/png_dc_kaze-12.png'
 import Link from "next/link"
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { Context } from "@/context"
 import { useRouter } from "next/navigation"
 import axios from "axios"
 import Swal from "sweetalert2"
+import { themeChange } from 'theme-change'
 
 export default function Navbar() {
   const { state: { user }, dispatch } = useContext(Context)
+
+  useEffect(() => {
+    themeChange(false)
+  })
 
   const router = useRouter()
 
@@ -81,6 +86,13 @@ export default function Navbar() {
             </div>
           </div>
         )}
+        <select data-choose-theme>
+          <option value="">Default</option>
+          <option value="light">Light</option>
+          <option value="cupcake">Cupcake</option>
+          <option value="forest">Forest</option>
+          <option value="cyberpunk">Cyberpunk</option>
+        </select>
       </div>
     </div>
   )

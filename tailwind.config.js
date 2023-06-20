@@ -5,6 +5,7 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       backgroundImage: {
@@ -67,7 +68,13 @@ module.exports = {
   plugins: [require('daisyui')],
   daisyui: {
     styled: true,
-    themes: ['light', 'dark'],
+    themes: [
+      'light',
+      'dark',
+      'cupcake',
+      'forest',
+      'cyberpunk',
+    ],
     base: true,
     utils: true,
     logs: true,
