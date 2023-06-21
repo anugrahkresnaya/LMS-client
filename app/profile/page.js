@@ -29,10 +29,12 @@ export default function Profile() {
 
   const getUser = async () => {
     try {
-      const { data } = await axios.get(`http://localhost:3001/user/${user.id}`)
-      console.log('user data', data.data);
-      setHidden(false)
-      setUserData(data.data)
+      if(user) {
+        const { data } = await axios.get(`http://localhost:3001/user/${user.id}`)
+        console.log('user data', data.data);
+        setHidden(false)
+        setUserData(data.data)
+      }
     } catch (error) {
       console.log(error)
       setHidden(true)
@@ -141,7 +143,8 @@ export default function Profile() {
                     <input type="text" name="phoneNumber" value={phoneNumber} onChange={(e) => {setPhoneNumber(e.target.value)}} placeholder="Your first name" id="phoneNumber" className='input input-bordered input-primary w-96' />
                   </div>
                 </div>
-                <div className='mb-5'>
+                <div className='flex flex-col mb-5'>
+                  <label htmlFor="photoProfile">Photo Profile</label>
                   <input type="file" name="photoProfile" onChange={(e) => onImageUpload(e)} className="file-input file-input-bordered file-input-primary w-full max-w-xs" />
                 </div>
                 <button type="submit" className="btn btn-primary mb-5">Save All</button>

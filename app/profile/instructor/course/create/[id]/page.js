@@ -4,13 +4,16 @@ import axios from "axios"
 import Swal from "sweetalert2"
 import Image from "next/image";
 import { useState } from "react";
+import { Router, useRouter } from "next/navigation";
 
-const CourseCreate = () => {
+const CourseCreate = ({params}) => {
+  console.log('params', params)
+  const router = useRouter()
   const [values, setValues] = useState({
     title: '',
     description: '',
     paid: true,
-    price: 10000,
+    price: 0,
   })
   const [loading, setLoading] = useState(false)
   const [imagePreview, setImagePreview] = useState(null)
@@ -39,14 +42,14 @@ const CourseCreate = () => {
     e.preventDefault()
     try {
       setLoading(true)
-      const { data } = await axios.post('http://localhost:3001/course/create-course', {
+      const { data } = await axios.post(`http://localhost:3001/course/${params.id}/create-course`, {
         title: values.title,
         description: values.description,
         paid: values.paid,
         price: values.price,
         image: imagePreview,
         video: video,
-        pdf: pdf
+        pdf: pdf,
       },
       {
         headers: {
@@ -61,9 +64,16 @@ const CourseCreate = () => {
         showConfirmButton: true,
       })
       setLoading(false)
+      router.push('/course')
     } catch (error) {
       console.log(error)
-      alert('error submit')
+      Swal.fire({
+        position: "center",
+        title: "Error!",
+        icon: "error",
+        text: "Course upload failed",
+        showConfirmButton: true,
+      })
       setLoading(false)
     }
   }
