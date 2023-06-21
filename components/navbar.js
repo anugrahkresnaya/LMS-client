@@ -2,7 +2,7 @@
 import Image from "next/image"
 import photo from '../public/png_dc_kaze-12.png'
 import Link from "next/link"
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Context } from "@/context"
 import { useRouter } from "next/navigation"
 import axios from "axios"
@@ -11,10 +11,27 @@ import { themeChange } from 'theme-change'
 
 export default function Navbar() {
   const { state: { user }, dispatch } = useContext(Context)
+  const [userData, setUserData] = useState([])
 
   useEffect(() => {
     themeChange(false)
-  })
+    getUser()
+  }, [])
+
+  const getUser = () => {
+    if (user) {
+      axios.get(`http://localhost:3001/user/${user.id}`, {
+        headers: {
+          "Authorization": `Bearer ${user.accessToken}`
+        }
+      })
+      .then(res => {
+        console.log('ini', res)
+        setUserData(res.data.data[0])
+      })
+      .catch(err => console.log(err.message))
+    }
+  }
 
   const router = useRouter()
 
@@ -43,7 +60,7 @@ export default function Navbar() {
       <div className="flex-none">
         <div className="dropdown dropdown-content">
           <ul className="menu menu-horizontal px-1">
-            <li><Link href="#">Courses</Link></li>
+            <li><Link href="/course">Courses</Link></li>
             <li><Link href="#">Contact</Link></li>
             {user === null && <li><Link href="/signin">Sign In</Link></li>}
           </ul>
@@ -70,7 +87,7 @@ export default function Navbar() {
             <div className="dropdown dropdown-end">
               <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                 <div className="w-10 rounded-full">
-                  <Image src={photo} height={40} width={40} alt="photo profile" />
+                  <Image src={user?.photoProfile} height={40} width={40} alt="photo profile" />
                 </div>
               </label>
               <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
