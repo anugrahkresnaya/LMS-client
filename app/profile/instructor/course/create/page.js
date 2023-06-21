@@ -230,9 +230,6 @@ const CourseCreate = () => {
             ><span className="loading loading-spinner"></span>Save</button>
           )}
         </form>
-        {/* <pre>{JSON.stringify(values, null, 4)}</pre>
-        <hr />
-        <pre>{JSON.stringify(image, null, 4)}</pre> */}
       </div>
     </div>
   )
