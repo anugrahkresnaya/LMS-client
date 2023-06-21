@@ -3,25 +3,12 @@ const { Context } = require("@/context")
 const { useContext } = require("react")
 import Image from 'next/image'
 import instructorPhoto from '../../../public/instructor-photo.jpg'
-import axios from 'axios'
+import Link from 'next/link'
 
 export default function Instructor() {
   const { 
     state: { user } 
   } = useContext(Context)
-
-  const becomeInstructor = () => {
-    // axios
-    // .get('http://localhost:3001/onboarding')
-    // .then((res) => {
-    //   console.log(res)
-       // window.location.href = res.data
-    // })
-    // .catch((err) => {
-    //   console.log(err.response.status);
-    //   alert("Midtrans onboarding failed. Try again.");
-    // });
-  }
 
   return (
     <div className="hero min-h-screen bg-base-200">
@@ -30,7 +17,10 @@ export default function Instructor() {
         <div>
           <h1 className="text-5xl font-bold">Become an Instructor!</h1>
           <p className="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
-          <button onClick={becomeInstructor} className="btn btn-primary" >Get Started</button>
+          <Link
+            href={`/profile/instructor/course/create/${user?.id}`}
+            className='btn btn-primary'
+          >Get Started</Link>
         </div>
       </div>
     </div>
