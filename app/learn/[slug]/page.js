@@ -1,19 +1,23 @@
 'use client'
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import axios from "axios"
 // import Image from "next/image"
 import { Viewer, Worker } from '@react-pdf-viewer/core';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
-
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import Image from "next/image";
 import profile from '../../../public/png_dc_kaze-12.png'
+const { Context } = require("@/context")
 
 const Learn = ({params}) => {
   const [courseData, setCourseData] = useState([])
   const [activateTab, setActivateTab] = useState(0)
   const [activateSection, setActivateSection] = useState(0)
+  const [instructorData, setInstructorData] = useState([])
+  const {
+    state: { user }
+  } = useContext(Context)
 
   const defaultLayoutPluginInstance = defaultLayoutPlugin()
 
@@ -32,7 +36,18 @@ const Learn = ({params}) => {
       .catch(error => console.log(error))
     }
     getCourseData()
-  }, [params.slug])
+
+    const getInstructorData = () => {
+      axios.get(`http://localhost:3001/user/${courseData.instructorId}`)
+      .then(res => {
+        console.log('instructor', res.data.data[0])
+        setInstructorData(res.data.data[0])
+      })
+      .catch(error => console.log(error))
+    }
+
+    getInstructorData()
+  }, [courseData.instructorId, params.slug])
 
   const handleActiveTab = (index) => {
     setActivateTab(index)
@@ -65,7 +80,7 @@ const Learn = ({params}) => {
           {/* <Viewer fileUrl={courseData.pdf} /> */}
         </div>
       )}
-      <div className="bg-base-300 mt-20 p-5 rounded-lg">
+      <div className="bg-base-300 mt-20 mb-10 p-5 rounded-lg">
         <div className="tabs">
           <div className={`tab tab-bordered ${activateSection == 1 ? 'tab-active' : ''}`} onClick={() => handleActiveSection(1)}>Overview</div>
           <div className={`tab tab-bordered ${activateSection == 2 ? 'tab-active' : ''}`} onClick={() => handleActiveSection(2)}>Comment</div>
@@ -77,7 +92,8 @@ const Learn = ({params}) => {
             <p>{courseData.description}</p>
             <div className="mt-10">
               <h1 className="font-bold text-xl">instructor</h1>
-              <p>Anonymous</p>
+              <Image src={instructorData?.photoProfile || photo} width={100} height={100} alt='profile avatar' />
+              <p>{`${instructorData.firstName} ${instructorData.lastName}` || 'anonymous'}</p>
             </div>
             <div className="mt-10">
               <h1>Students that enroll: 10</h1>
