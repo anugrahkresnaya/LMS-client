@@ -6,6 +6,8 @@ import { Context } from '@/context'
 import { useEffect, useState, useContext } from 'react'
 import axios from 'axios'
 import Link from 'next/link'
+import Swal from 'sweetalert2'
+import { useRouter } from 'next/navigation'
 
 const Course = ({params}) => {
   const { 
@@ -14,6 +16,9 @@ const Course = ({params}) => {
   const [courseData, setCourseData] = useState([])
   const [instructorData, setInstructorData] = useState([])
   console.log('slug', params)
+
+  const router = useRouter()
+
   useEffect(() => {
     const getCourseData = () => {
       axios.get(`http://localhost:3001/course/${params.slug}`)
@@ -36,6 +41,39 @@ const Course = ({params}) => {
 
     getInstructorData()
   }, [courseData.instructor, courseData.instructorId, params.slug])
+
+  const handleCheckout = async () => {
+    Swal.fire({
+      title: 'Buy this course?',
+      text: "You will be redirect to payment page",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Buy'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.post(`http://localhost:3001/course/${courseData.id}/order`, {
+          userId: user.id,
+          instructorId: instructorData.id
+        })
+        .then(res => {
+          console.log('result checkout', res.data.data)
+          router.push(res.data.data.redirectUrl)
+        })
+        .catch(error => {
+          console.log('error when buying: ', error)
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: error.message,
+            showConfirmButton: true
+          })
+        })
+      }
+    })
+  }
+
   return(
     <div>
       <div>
@@ -68,7 +106,7 @@ const Course = ({params}) => {
             </div>
           ) : (
           <div className='flex flex-col'>
-            <button className="btn btn-active btn-primary mb-5">Buy this course</button>
+            <button className="btn btn-active btn-primary mb-5" onClick={handleCheckout}>Buy this course</button>
           </div>
           )}
         </div>
