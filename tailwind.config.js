@@ -71,9 +71,14 @@ module.exports = {
     themes: [
       'light',
       'dark',
+      'black',
       'cupcake',
       'forest',
-      'cyberpunk',
+      'night',
+      'valentine',
+      'dracula',
+      'lofi',
+      'synthwave'
     ],
     base: true,
     utils: true,
