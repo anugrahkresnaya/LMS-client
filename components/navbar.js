@@ -89,11 +89,10 @@ export default function Navbar() {
         <option value="black">Black</option>
         <option value="cupcake">Cupcake</option>
         <option value="forest">Forest</option>
-        <option value="cyberpunk">Cyberpunk</option>
         <option value="night">Night</option>
         <option value="valentine">Valentine</option>
         <option value="Dracula">Dracula</option>
-        <option value="Lofi">Lofi</option>
+        <option value="lofi">Lofi</option>
         <option value="synthwave">Synthwave</option>
       </select>
     </div>
