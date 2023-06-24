@@ -1,3 +1,4 @@
+'use client'
 import axios from "axios";
 import { useReducer, createContext, useEffect } from "react";
 import { useRouter } from "next/navigation";
