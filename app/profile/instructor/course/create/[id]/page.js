@@ -3,11 +3,13 @@ import Resizer from "react-image-file-resizer"
 import axios from "axios"
 import Swal from "sweetalert2"
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Router, useRouter } from "next/navigation";
+import { Context } from "@/context"
 
 const CourseCreate = ({params}) => {
   console.log('params', params)
+  const { state: { user }, dispatch } = useContext(Context)
   const router = useRouter()
   const [values, setValues] = useState({
     title: '',
@@ -26,8 +28,6 @@ const CourseCreate = ({params}) => {
     setImagePreview(imageFile)
   }
 
-  console.log('image preview'. imagePreview)
-
   const handleVideo = (e) => {
     let videoFile = e.target.files[0]
     setVideo(videoFile)
@@ -42,7 +42,7 @@ const CourseCreate = ({params}) => {
     e.preventDefault()
     try {
       setLoading(true)
-      const { data } = await axios.post(`http://localhost:3001/course/${params.id}/create-course`, {
+      await axios.post(`http://localhost:3001/course/${params.id}/create-course`, {
         title: values.title,
         description: values.description,
         paid: values.paid,
@@ -53,6 +53,7 @@ const CourseCreate = ({params}) => {
       },
       {
         headers: {
+          Authorization: `Bearer ${user.accessToken}`,
           'Content-Type': 'multipart/form-data'
         }
       })
@@ -129,8 +130,8 @@ const CourseCreate = ({params}) => {
   // }
 
   return (
-    <div>
-      <h1>Create Course</h1>
+    <div className="mb-5">
+      <h1 className="text-center font-bold text-5xl mb-5">Create Course</h1>
       <div className="mx-auto max-w-xl">
         <form onSubmit={handleSubmit} className="flex justify-center flex-col bg-base-300 rounded px-5">
           <input 
@@ -183,28 +184,6 @@ const CourseCreate = ({params}) => {
               accept="image/*"
               className="file-input file-input-bordered file-input-primary w-full mt-1"
             />
-            {/* {imagePreview && (
-              <div>
-                <div className="avatar mt-5 flex justify-center">
-                  <div className="w-24 rounded">
-                    <Image 
-                      src={imagePreview} 
-                      width={40} 
-                      height={40} 
-                      alt="course preview"
-                    />
-                  </div>
-                </div>
-                <div className="flex justify-center mt-5">
-                  <button 
-                    className="btn btn-xs btn-primary"
-                    onClick={handleRemoveImage}
-                  >
-                    delete
-                  </button>
-                </div>
-              </div> 
-            )} */}
           </div>
           <div>
             <label htmlFor="video" className="mt-5">Input file for video course</label>
@@ -237,7 +216,7 @@ const CourseCreate = ({params}) => {
             <button
               className="btn btn-outline btn-primary w-40 mx-auto my-5" 
               onClick={handleSubmit}
-            ><span className="loading loading-spinner"></span>Save</button>
+            ><span></span>Save</button>
           )}
         </form>
       </div>
