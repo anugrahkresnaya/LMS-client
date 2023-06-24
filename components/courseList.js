@@ -20,7 +20,6 @@ const CourseList = ({ title, price, image, params, isLoggedIn }) => {
         <h3>{price || 'Free'}</h3>
         {isLoggedIn && (
           <div className="card-actions justify-end">
-            <button className="btn btn-primary">Wishlist</button>
             <button className="btn btn-primary">Buy Now</button>
           </div>
         )}

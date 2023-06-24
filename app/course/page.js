@@ -38,9 +38,9 @@ const Course = () => {
   })
 
   return (
-    <div>
+    <div className="min-h-screen">
       <h1 className='text-center mt-5 font-bold text-5xl'>Courses</h1>
-      <div className='flex justify-center m-5'>
+      <div className='flex justify-center flex-wrap m-5'>
         {renderList}
       </div>
     </div>

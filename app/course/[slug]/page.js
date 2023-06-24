@@ -64,11 +64,11 @@ const Course = ({params}) => {
           {user?.id === instructorData?.id ? (
             <div className='flex flex-col'>
               <Link className="btn btn-active btn-primary mb-5" href={`/learn/${params.slug}`}>Go to course</Link>
+              <Link className="btn btn-active btn-primary mb-5" href={`/course/update-course/${params.slug}`}>Edit your course</Link>
             </div>
           ) : (
           <div className='flex flex-col'>
             <button className="btn btn-active btn-primary mb-5">Buy this course</button>
-            <button className="btn btn-outline btn-secondary">Wishlist</button>
           </div>
           )}
         </div>

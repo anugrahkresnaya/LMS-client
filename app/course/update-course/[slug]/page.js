@@ -1,15 +1,12 @@
 'use client'
-import Resizer from "react-image-file-resizer"
+// import Resizer from "react-image-file-resizer"
 import axios from "axios"
 import Swal from "sweetalert2"
-import Image from "next/image";
-import { useState, useContext } from "react";
-import { Router, useRouter } from "next/navigation";
-import { Context } from "@/context"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-const CourseCreate = ({params}) => {
+const CourseUpdate= ({params}) => {
   console.log('params', params)
-  const { state: { user }, dispatch } = useContext(Context)
   const router = useRouter()
   const [values, setValues] = useState({
     title: '',
@@ -28,6 +25,8 @@ const CourseCreate = ({params}) => {
     setImagePreview(imageFile)
   }
 
+  console.log('image preview'. imagePreview)
+
   const handleVideo = (e) => {
     let videoFile = e.target.files[0]
     setVideo(videoFile)
@@ -42,7 +41,7 @@ const CourseCreate = ({params}) => {
     e.preventDefault()
     try {
       setLoading(true)
-      await axios.post(`http://localhost:3001/course/${params.id}/create-course`, {
+      await axios.put(`http://localhost:3001/course/update/${params.slug}`, {
         title: values.title,
         description: values.description,
         paid: values.paid,
@@ -53,7 +52,6 @@ const CourseCreate = ({params}) => {
       },
       {
         headers: {
-          Authorization: `Bearer ${user.accessToken}`,
           'Content-Type': 'multipart/form-data'
         }
       })
@@ -79,60 +77,10 @@ const CourseCreate = ({params}) => {
     }
   }
 
-  // const handleImage = (e) => {
-  //   let file = e.target.files[0]
-  //   console.log('file: ', file)
-  //   setPreview(window.URL.createObjectURL(file))
-  //   setValues({ ...values, loading: true })
-    
-  //   // resize
-  //   Resizer.imageFileResizer(file, 720, 500, "JPEG", 100, 0, async (uri) => {
-  //     try {
-  //       let {data} = await axios.post('http://localhost:3001/course/upload', {
-  //         image: uri,
-  //       })
-  //       console.log('image uploaded', data)
-  //       //set image in the state
-  //       setImage(data)
-  //       setValues({ ...values, loading: false })
-  //     } catch (error) {
-  //       console.log('resizer error: ', error)
-  //       console.log(error.message)
-  //       setValues({ ...values, loading: false })
-  //       Swal.fire(
-  //         'Error',
-  //         'Image preview upload failed. Please try again later',
-  //         'error'
-  //       )
-  //     }
-  //   })
-  // }
-
-  // const handleRemoveImage = async () => {
-  //   console.log("Remove Image")
-  //   try {
-  //     setImagePreview(null)
-  //     // console.log('values: ', values)
-  //     // setValues({ ...values, loading: true })
-  //     // const res = await axios.post('http://localhost:3001/course/remove-image', { image })
-  //     // setImage({})
-  //     // setPreview('')
-  //     // setValues({ ...values, loading: false })
-  //   } catch (error) {
-  //     console.log(error)
-  //     // setValues({ ...values, loading: false })
-  //     Swal.fire(
-  //       'Error',
-  //       'Image preview upload failed. Please try again later',
-  //       'error'
-  //     )
-  //   }
-  // }
-
   return (
-    <div className="mb-5">
-      <h1 className="text-center font-bold text-5xl mb-5">Create Course</h1>
-      <div className="mx-auto max-w-xl">
+    <div>
+      <h1 className="text-center font-bold text-5xl mb-5">Update Course</h1>
+      <div className="mx-auto max-w-xl mb-5">
         <form onSubmit={handleSubmit} className="flex justify-center flex-col bg-base-300 rounded px-5">
           <input 
             type="text"
@@ -224,4 +172,4 @@ const CourseCreate = ({params}) => {
   )
 }
 
-export default CourseCreate
+export default CourseUpdate
