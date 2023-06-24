@@ -70,7 +70,6 @@ const Learn = ({params}) => {
       )}
       {activateTab === 1 && (
         <div>
-          <h1>ini tab 2</h1>
           <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
             <div className="mx-auto w-[800px] h-[1000]">
               <Viewer fileUrl={courseData.pdf} plugins={[defaultLayoutPluginInstance]} />
@@ -94,9 +93,6 @@ const Learn = ({params}) => {
               <h1 className="font-bold text-xl">instructor</h1>
               <Image src={instructorData?.photoProfile || photo} width={100} height={100} alt='profile avatar' />
               <p>{`${instructorData.firstName} ${instructorData.lastName}` || 'anonymous'}</p>
-            </div>
-            <div className="mt-10">
-              <h1>Students that enroll: 10</h1>
             </div>
           </div>
         )}
