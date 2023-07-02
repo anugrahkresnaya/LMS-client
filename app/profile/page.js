@@ -19,6 +19,7 @@ export default function Profile() {
   const [photoProfile, setPhotoProfile] = useState(null)
   const [activateTab, setActivateTab] = useState(0)
   const [createdCourse, setCreatedCourse] = useState([])
+  const [enrolledData, setEnrolledData] = useState([])
 
   const {
     state: { user },
@@ -28,6 +29,7 @@ export default function Profile() {
   useEffect(() => {
     getUser()
     getCreatedCourse()
+    getCourseBySettlement()
   }, [])
 
   const getUser = async () => {
@@ -45,9 +47,9 @@ export default function Profile() {
   }
 
   const getCreatedCourse = () => {
-    axios.get(`http://localhost:3001/courses/${user.id}`, {
+    axios.get(`http://localhost:3001/courses/${user?.id}`, {
       headers: {
-        Authorization: `Bearer ${user.accessToken}`
+        Authorization: `Bearer ${user?.accessToken}`
       }
     })
     .then(res =>{
@@ -55,6 +57,32 @@ export default function Profile() {
     })
     .catch(error => console.log(error))
   }
+
+  const getCourseBySettlement = () => {
+    axios.post('http://localhost:3001/getCourseBySettlement', {
+      userId: user?.id
+    })
+    .then(res => {
+      console.log('settle', res.data.data)
+      setEnrolledData(res.data.data)
+    })
+  }
+
+  const renderEnroll = enrolledData.map(item => {
+    const words = item.slug.split("-");
+    const capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
+    const capitalizedTitle = capitalizedWords.join(" ")
+
+    return(
+      <div key={item.id} className="card w-96 bg-base-300 shadow-xl mt-5 mr-5">
+        <div className="card-body">
+          <Link href={`/course/${item.slug}`}>
+            <h1 className='font-bold text-xl text-center'>{capitalizedTitle}</h1>
+          </Link>
+        </div>
+      </div>
+    )
+  })
 
   const onImageUpload = (e) => {
     let file = e.target.files[0]
@@ -244,8 +272,11 @@ export default function Profile() {
                 <div className='flex flex-row flex-wrap'>
                   {renderCreatedCourse}
                 </div>
-                <div className='flex flex-row flex-wrap'>
+                <div className=''>
                   <h1 className='font-bold text-xl'>Enrolled Course</h1>
+                  <div className='flex flex-row flex-wrap'>
+                    {renderEnroll}
+                  </div>
                 </div>
               </div>
             )}
