@@ -20,7 +20,7 @@ const CourseList = ({ title, price, image, params, isLoggedIn }) => {
         <h3>{price || 'Free'}</h3>
         {isLoggedIn && (
           <div className="card-actions justify-end">
-            <button className="btn btn-primary">Buy Now</button>
+            <Link className="btn btn-primary" href={`/course/${params}`}>Details</Link>
           </div>
         )}
       </div>
