@@ -52,7 +52,7 @@ const Course = ({params}) => {
     }
 
     getPurchasedAccess()
-  }, [courseData.instructor, courseData.instructorId, params.slug])
+  }, [courseData?.id, courseData.instructor, courseData.instructorId, params.slug])
 
   const handleCheckout = async () => {
     Swal.fire({
@@ -67,10 +67,22 @@ const Course = ({params}) => {
       if (result.isConfirmed) {
         axios.post(`http://localhost:3001/course/${courseData.id}/order`, {
           userId: user.id,
-          instructorId: instructorData.id
+          instructorId: instructorData.id,
+          slug: params?.slug
         })
         .then(res => {
-          router.push(res.data.data.redirectUrl)
+          if (res.data.data.redirectUrl === null) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Success',
+              text: 'Success enroll the course',
+              showConfirmButton: false,
+              timer: 1000
+            })
+            router.push(`/course/${params.slug}`)
+          } else {
+            router.push(res.data.data.redirectUrl)
+          }
         })
         .catch(error => {
           console.log('error when buying: ', error)
@@ -115,18 +127,18 @@ const Course = ({params}) => {
         <div className='flex-col ml-20 bg-base-300 p-5 mb-5 rounded-xl'>
           <h1 className='mb-5'>Price: {courseData.price === 0 ? 'FREE' : `Rp ${courseData.price}`}</h1>
           <h1 className='mb-5'>Instructor: {`${instructorData.firstName} ${instructorData.lastName}` || 'anonymous'}</h1>
-          {user?.id !== instructorData?.id ? (
-            <div className='flex flex-col'>
-              {(user?.id !== orderData.userId && orderData.status !== 'settlement') ? (
-                <button className="btn btn-active btn-primary mb-5" onClick={handleCheckout}>Buy this course</button>
-              ) : (
-                <Link className="btn btn-active btn-primary mb-5" href={`/learn/${params.slug}`}>Go to course</Link>
-              )}
-            </div>
-          ) : (
+          {user?.id === instructorData?.id ? (
             <div className='flex flex-col'>
               <Link className="btn btn-active btn-primary mb-5" href={`/learn/${params.slug}`}>Go to course</Link>
               <Link className="btn btn-active btn-primary mb-5" href={`/course/update-course/${params.slug}`}>Edit your course</Link>
+            </div>
+          ) : (
+            <div className='flex flex-col'>
+              {(user?.id === orderData.userId && orderData.status === 'settlement') ? (
+                <Link className="btn btn-active btn-primary mb-5" href={`/learn/${params.slug}`}>Go to course</Link>
+              ) : (
+                <button className="btn btn-active btn-primary mb-5" onClick={handleCheckout}>Buy this course</button>
+              )}
             </div>
           )}
         </div>
