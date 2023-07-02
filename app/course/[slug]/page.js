@@ -15,7 +15,7 @@ const Course = ({params}) => {
   } = useContext(Context)
   const [courseData, setCourseData] = useState([])
   const [instructorData, setInstructorData] = useState([])
-  console.log('slug', params)
+  const [orderData, setOrderData] = useState([])
 
   const router = useRouter()
 
@@ -23,7 +23,6 @@ const Course = ({params}) => {
     const getCourseData = () => {
       axios.get(`http://localhost:3001/course/${params.slug}`)
       .then(res => {
-        console.log(res.data.data)
         setCourseData(res.data.data)
       })
       .catch(error => console.log(error))
@@ -33,14 +32,27 @@ const Course = ({params}) => {
     const getInstructorData = () => {
       axios.get(`http://localhost:3001/user/${courseData.instructorId}`)
       .then(res => {
-        console.log('instructor', res.data.data[0])
         setInstructorData(res.data.data[0])
       })
       .catch(error => console.log(error))
     }
 
     getInstructorData()
-  }, [courseData.instructor, courseData.instructorId, params.slug])
+
+    const getPurchasedAccess = () => {
+      axios.post('http://localhost:3001/access', {
+        courseId: courseData?.id
+      })
+      .then(res => {
+        setOrderData(res.data.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    }
+
+    getPurchasedAccess()
+  }, [courseData?.id, courseData.instructor, courseData.instructorId, params.slug])
 
   const handleCheckout = async () => {
     Swal.fire({
@@ -55,11 +67,22 @@ const Course = ({params}) => {
       if (result.isConfirmed) {
         axios.post(`http://localhost:3001/course/${courseData.id}/order`, {
           userId: user.id,
-          instructorId: instructorData.id
+          instructorId: instructorData.id,
+          slug: params?.slug
         })
         .then(res => {
-          console.log('result checkout', res.data.data)
-          router.push(res.data.data.redirectUrl)
+          if (res.data.data.redirectUrl === null) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Success',
+              text: 'Success enroll the course',
+              showConfirmButton: false,
+              timer: 1000
+            })
+            router.push(`/course/${params.slug}`)
+          } else {
+            router.push(res.data.data.redirectUrl)
+          }
         })
         .catch(error => {
           console.log('error when buying: ', error)
@@ -73,6 +96,11 @@ const Course = ({params}) => {
       }
     })
   }
+
+  console.log('course id', courseData.id)
+  console.log(' user state id', user?.id)
+  console.log('user id from order data', orderData?.id)
+  console.log('status', orderData?.status)
 
   return(
     <div>
@@ -105,9 +133,13 @@ const Course = ({params}) => {
               <Link className="btn btn-active btn-primary mb-5" href={`/course/update-course/${params.slug}`}>Edit your course</Link>
             </div>
           ) : (
-          <div className='flex flex-col'>
-            <button className="btn btn-active btn-primary mb-5" onClick={handleCheckout}>Buy this course</button>
-          </div>
+            <div className='flex flex-col'>
+              {(user?.id === orderData.userId && orderData.status === 'settlement') ? (
+                <Link className="btn btn-active btn-primary mb-5" href={`/learn/${params.slug}`}>Go to course</Link>
+              ) : (
+                <button className="btn btn-active btn-primary mb-5" onClick={handleCheckout}>Buy this course</button>
+              )}
+            </div>
           )}
         </div>
       </div>

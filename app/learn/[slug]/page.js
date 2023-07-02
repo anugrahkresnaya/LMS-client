@@ -7,7 +7,9 @@ import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import Image from "next/image";
-import profile from '../../../public/png_dc_kaze-12.png'
+import profile from '../../../public/default.jpg'
+import Swal from "sweetalert2";
+import { FaTrash } from "react-icons/fa"
 const { Context } = require("@/context")
 
 const Learn = ({params}) => {
@@ -15,9 +17,14 @@ const Learn = ({params}) => {
   const [activateTab, setActivateTab] = useState(0)
   const [activateSection, setActivateSection] = useState(0)
   const [instructorData, setInstructorData] = useState([])
+  const [userData, setUserData] = useState([])
+  const [commentInput, setCommentInput] = useState('')
+  const [commentData, setCommentData] = useState([])
   const {
     state: { user }
   } = useContext(Context)
+
+  console.log(user)
 
   const defaultLayoutPluginInstance = defaultLayoutPlugin()
 
@@ -30,7 +37,6 @@ const Learn = ({params}) => {
         withCredentials: true,
       })
       .then(res => {
-        console.log(res.data.data)
         setCourseData(res.data.data)
       })
       .catch(error => console.log(error))
@@ -40,14 +46,39 @@ const Learn = ({params}) => {
     const getInstructorData = () => {
       axios.get(`http://localhost:3001/user/${courseData.instructorId}`)
       .then(res => {
-        console.log('instructor', res.data.data[0])
         setInstructorData(res.data.data[0])
       })
       .catch(error => console.log(error))
     }
 
     getInstructorData()
-  }, [courseData.instructorId, params.slug])
+
+    const getUserData = () => {
+      axios.get(`http://localhost:3001/user/${user?.id}`)
+      .then(res => {
+        console.log('result', res.data.data)
+        setUserData(res.data.data[0])
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    }
+
+    getUserData()
+
+    const getCommentData = () => {
+      axios.get(`http://localhost:3001/comments/${params?.slug}`)
+      .then(res => {
+        console.log('comment', res.data.data)
+        setCommentData(res.data.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    }
+
+    getCommentData()
+  }, [courseData?.instructorId, params?.slug, user?.id])
 
   const handleActiveTab = (index) => {
     setActivateTab(index)
@@ -56,6 +87,86 @@ const Learn = ({params}) => {
   const handleActiveSection = (index) => {
     setActivateSection(index)
   }
+
+  const handleCommentContentChange = (e) => {
+    setCommentInput(e.target.value)
+  }
+
+  const handleSubmitComment = async () => {
+    await axios.post(`http://localhost:3001/comment/${params?.slug}`, {
+      userId: user?.id,
+      comment_content: commentInput,
+      firstName: userData?.firstName,
+      lastName: userData?.lastName,
+      image: userData?.photoProfile,
+    })
+    .then(() => {
+      Swal.fire({
+        position: "center",
+        title: "Successfull!",
+        icon: "success",
+        text: "Comment submitted successfully",
+        showConfirmButton: false,
+        timer: 1000,
+      })
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
+
+  const renderComment = commentData.map(item => {
+    const handleDelete = async () => {
+      await axios.delete(`http://localhost:3001/comment/${item?.id}`)
+      .then(res => {
+        console.log(res)
+        Swal.fire({
+          position: "center",
+          title: "Successfull!",
+          icon: "success",
+          text: "Comment deleted successfully",
+          showConfirmButton: false,
+          timer: 1000,
+        })
+        // router.push(`/artikel/detail-artikel/${params.id}`)
+        // router.refresh()
+      })
+      .catch(err => {
+        console.log(err)
+        Swal.fire({
+          position: "center",
+          title: "Error!",
+          icon: "error",
+          text: "Comment failed to delete",
+          showConfirmButton: false,
+          timer: 1000,
+        })
+      })
+    }
+
+    return(
+      <div key={item?.id} className="relative grid grid-cols-1 gap-4 p-4 mb-8 rounded-lg bg-base-200 shadow-lg">
+        <div className="relative flex gap-4">
+          <Image src={item?.image || profile} 
+            className="relative rounded-lg -top-8 -mb-4 bg-base-200"
+            alt="profile"
+            width={80}
+            height={80}
+          />
+          <div className="flex flex-col w-full">
+            <div className="flex flex-row justify-between">
+              <p className="relative text-xl whitespace-nowrap truncate overflow-hidden">{item?.firstName} {item?.lastName}</p>
+              {item.userId === user?.id && (
+                <button onClick={handleDelete} className="text-gray-500 text-xl" href="#"><FaTrash /></button>
+              )}
+            </div>
+              <p className="text-gray-400 text-sm">20 April 2022, at 14:88 PM</p>
+            </div>
+          </div>
+        <p className="-mt-4 text-gray-500">{item.comment}</p>
+      </div>
+    )
+  })
 
   return(
     <div className="ml-5 mr-5">
@@ -75,8 +186,6 @@ const Learn = ({params}) => {
               <Viewer fileUrl={courseData.pdf} plugins={[defaultLayoutPluginInstance]} />
             </div>
           </Worker>
-          {/* <iframe src="https://storage.googleapis.com/oceanz-bucket/1687319600887_Invoice20211101991754CBN00335301121.pdf" frameborder="0"></iframe>
-          {/* <Viewer fileUrl={courseData.pdf} /> */}
         </div>
       )}
       <div className="bg-base-300 mt-20 mb-10 p-5 rounded-lg">
@@ -99,72 +208,21 @@ const Learn = ({params}) => {
         {activateSection === 2 && (
           <div className="mt-10">
             <div className="mb-10">
-              <form method="post">
-                <textarea 
+              <form method="post" onSubmit={handleSubmitComment}>
+                <textarea
                   name="comment_content"
                   id="comment_content"
                   placeholder="Type your comment here..."
                   cols="30"
                   rows="10"
+                  value={commentInput}
+                  onChange={handleCommentContentChange}
                   className="w-full rounded-lg p-5"
                 ></textarea>
-                <button className="btn btn-primary">Submit</button>
+                <button className="btn btn-primary" disabled={!commentInput}>Submit</button>
               </form>
             </div>
-            <div class="relative grid grid-cols-1 gap-4 p-4 mb-8 rounded-lg bg-base-200 shadow-lg">
-              <div class="relative flex gap-4">
-                <Image src={profile} 
-                  class="relative rounded-lg -top-8 -mb-4 bg-base-200"
-                  alt="profile"
-                  width={80}
-                  height={80}
-                />
-                <div class="flex flex-col w-full">
-                  <div class="flex flex-row justify-between">
-                    <p class="relative text-xl whitespace-nowrap truncate overflow-hidden">COMMENTOR</p>
-                    <a class="text-gray-500 text-xl" href="#"><i class="fa-solid fa-trash"></i></a>
-                  </div>
-                    <p class="text-gray-400 text-sm">20 April 2022, at 14:88 PM</p>
-                  </div>
-                </div>
-              <p class="-mt-4 text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime quisquam vero adipisci beatae voluptas dolor ame.</p>
-            </div>
-            <div class="relative grid grid-cols-1 gap-4 p-4 mb-8 rounded-lg bg-base-200 shadow-lg">
-              <div class="relative flex gap-4">
-                <Image src={profile} 
-                  class="relative rounded-lg -top-8 -mb-4 bg-base-200"
-                  alt="profile"
-                  width={80}
-                  height={80}
-                />
-                <div class="flex flex-col w-full">
-                  <div class="flex flex-row justify-between">
-                    <p class="relative text-xl whitespace-nowrap truncate overflow-hidden">COMMENTOR</p>
-                    <a class="text-gray-500 text-xl" href="#"><i class="fa-solid fa-trash"></i></a>
-                  </div>
-                    <p class="text-gray-400 text-sm">20 April 2022, at 14:88 PM</p>
-                  </div>
-                </div>
-              <p class="-mt-4 text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime quisquam vero adipisci beatae voluptas dolor ame.</p>
-            </div>
-            <div class="relative grid grid-cols-1 gap-4 p-4 mb-8 rounded-lg bg-base-200 shadow-lg">
-              <div class="relative flex gap-4">
-                <Image src={profile} 
-                  class="relative rounded-lg -top-8 -mb-4 bg-base-200"
-                  alt="profile"
-                  width={80}
-                  height={80}
-                />
-                <div class="flex flex-col w-full">
-                  <div class="flex flex-row justify-between">
-                    <p class="relative text-xl whitespace-nowrap truncate overflow-hidden">COMMENTOR</p>
-                    <a class="text-gray-500 text-xl" href="#"><i class="fa-solid fa-trash"></i></a>
-                  </div>
-                    <p class="text-gray-400 text-sm">20 April 2022, at 14:88 PM</p>
-                  </div>
-                </div>
-              <p class="-mt-4 text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. <br />Maxime quisquam vero adipisci beatae voluptas dolor ame.</p>
-            </div>
+            {renderComment}
           </div>
         )}
       </div>
