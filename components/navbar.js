@@ -10,6 +10,7 @@ import Swal from "sweetalert2"
 import { themeChange } from 'theme-change'
 
 export default function Navbar() {
+  const api = process.env.NEXT_PUBLIC_ORIGIN_API
   const { state: { user }, dispatch } = useContext(Context)
   const [userRole, setUserRole] = useState([])
 
@@ -20,7 +21,7 @@ export default function Navbar() {
 
   const getUser = () => {
     if (user) {
-      axios.get(`http://localhost:3001/user/${user.id}`, {
+      axios.get(`${api}/user/${user.id}`, {
         headers: {
           "Authorization": `Bearer ${user.accessToken}`
         }
@@ -40,7 +41,7 @@ export default function Navbar() {
   const logout = async () => {
     dispatch({ type: "LOGOUT" })
     window.localStorage.removeItem("user")
-    await axios.get('http://localhost:3001/logout', {
+    await axios.get(`${api}/logout`, {
       withCredentials: true,
       credentials: 'same-origin'
     })

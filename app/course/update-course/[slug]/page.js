@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const CourseUpdate= ({params}) => {
-  console.log('params', params)
+  const api = process.env.NEXT_PUBLIC_ORIGIN_API
   const router = useRouter()
   const [values, setValues] = useState({
     title: '',
@@ -41,7 +41,7 @@ const CourseUpdate= ({params}) => {
     e.preventDefault()
     try {
       setLoading(true)
-      await axios.put(`http://localhost:3001/course/update/${params.slug}`, {
+      await axios.put(`${api}course/update/${params.slug}`, {
         title: values.title,
         description: values.description,
         paid: values.paid,

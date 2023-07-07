@@ -9,6 +9,8 @@ import Swal from 'sweetalert2'
 import Link from 'next/link'
 
 export default function Profile() {
+  const api = process.env.NEXT_PUBLIC_ORIGIN_API
+
   const [hidden, setHidden] = useState(true)
   const [userData, setUserData] = useState([])
   const [firstName, setFirstName] = useState("")
@@ -35,7 +37,7 @@ export default function Profile() {
   const getUser = async () => {
     try {
       if(user) {
-        const { data } = await axios.get(`http://localhost:3001/user/${user.id}`)
+        const { data } = await axios.get(`${api}/user/${user.id}`)
         console.log('user data', data.data);
         setHidden(false)
         setUserData(data.data)
@@ -47,7 +49,7 @@ export default function Profile() {
   }
 
   const getCreatedCourse = () => {
-    axios.get(`http://localhost:3001/courses/${user?.id}`, {
+    axios.get(`${api}/courses/${user?.id}`, {
       headers: {
         Authorization: `Bearer ${user?.accessToken}`
       }
@@ -59,7 +61,7 @@ export default function Profile() {
   }
 
   const getCourseBySettlement = () => {
-    axios.post('http://localhost:3001/getCourseBySettlement', {
+    axios.post('${api}/getCourseBySettlement', {
       userId: user?.id
     })
     .then(res => {
@@ -97,7 +99,7 @@ export default function Profile() {
     e.preventDefault()
     
     try {
-      const { data } = await axios.put(`http://localhost:3001/user/update/${user.id}`, {
+      const { data } = await axios.put(`${api}/user/update/${user.id}`, {
         firstName: firstName,
         lastName: lastName,
         dateOfBirth: birthDay,
@@ -141,7 +143,7 @@ export default function Profile() {
 
   const handleDeleteCourse = async (courseId) => {
     try {
-      await axios.delete(`http://localhost:3001/course/delete/${courseId}`, {
+      await axios.delete(`${api}/course/delete/${courseId}`, {
         headers: {
           Authorization: `Bearer ${user.accessToken}`
         }

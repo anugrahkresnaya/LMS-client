@@ -15,9 +15,11 @@ export default function RatingForm({params}) {
 
   const router = useRouter()
 
+  const api = process.env.NEXT_PUBLIC_ORIGIN_API
+
   useEffect(() => {
     const getUserData = () => {
-      axios.get(`http://localhost:3001/user/${user?.id}`)
+      axios.get(`${api}/user/${user?.id}`)
       .then(res => {
         console.log('result', res.data.data)
         setUserData(res.data.data[0])
@@ -32,7 +34,7 @@ export default function RatingForm({params}) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    axios.post(`http://localhost:3001/rating/${params.slug}`, {
+    axios.post(`${api}/rating/${params.slug}`, {
       userId: user?.id,
       value: selected,
       review: review,

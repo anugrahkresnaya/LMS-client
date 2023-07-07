@@ -1,16 +1,17 @@
 'use client'
-import Resizer from "react-image-file-resizer"
 import axios from "axios"
 import Swal from "sweetalert2"
-import Image from "next/image";
 import { useState, useContext } from "react";
-import { Router, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Context } from "@/context"
 
 const CourseCreate = ({params}) => {
-  console.log('params', params)
-  const { state: { user }, dispatch } = useContext(Context)
+  const api = process.env.NEXT_PUBLIC_ORIGIN_API
+
+  const { state: { user } } = useContext(Context)
+
   const router = useRouter()
+
   const [values, setValues] = useState({
     title: '',
     description: '',
@@ -42,7 +43,7 @@ const CourseCreate = ({params}) => {
     e.preventDefault()
     try {
       setLoading(true)
-      await axios.post(`http://localhost:3001/course/${params.id}/create-course`, {
+      await axios.post(`${api}/course/${params.id}/create-course`, {
         title: values.title,
         description: values.description,
         paid: values.paid,
@@ -78,56 +79,6 @@ const CourseCreate = ({params}) => {
       setLoading(false)
     }
   }
-
-  // const handleImage = (e) => {
-  //   let file = e.target.files[0]
-  //   console.log('file: ', file)
-  //   setPreview(window.URL.createObjectURL(file))
-  //   setValues({ ...values, loading: true })
-    
-  //   // resize
-  //   Resizer.imageFileResizer(file, 720, 500, "JPEG", 100, 0, async (uri) => {
-  //     try {
-  //       let {data} = await axios.post('http://localhost:3001/course/upload', {
-  //         image: uri,
-  //       })
-  //       console.log('image uploaded', data)
-  //       //set image in the state
-  //       setImage(data)
-  //       setValues({ ...values, loading: false })
-  //     } catch (error) {
-  //       console.log('resizer error: ', error)
-  //       console.log(error.message)
-  //       setValues({ ...values, loading: false })
-  //       Swal.fire(
-  //         'Error',
-  //         'Image preview upload failed. Please try again later',
-  //         'error'
-  //       )
-  //     }
-  //   })
-  // }
-
-  // const handleRemoveImage = async () => {
-  //   console.log("Remove Image")
-  //   try {
-  //     setImagePreview(null)
-  //     // console.log('values: ', values)
-  //     // setValues({ ...values, loading: true })
-  //     // const res = await axios.post('http://localhost:3001/course/remove-image', { image })
-  //     // setImage({})
-  //     // setPreview('')
-  //     // setValues({ ...values, loading: false })
-  //   } catch (error) {
-  //     console.log(error)
-  //     // setValues({ ...values, loading: false })
-  //     Swal.fire(
-  //       'Error',
-  //       'Image preview upload failed. Please try again later',
-  //       'error'
-  //     )
-  //   }
-  // }
 
   return (
     <div className="mb-5">

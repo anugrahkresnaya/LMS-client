@@ -8,6 +8,7 @@ import Link from "next/link"
 
 
 export default function SignUp() {
+  const api = process.env.NEXT_PUBLIC_ORIGIN_API
   const router = useRouter()
   const [values, setValues] = useState({
     email: "",
@@ -24,7 +25,7 @@ export default function SignUp() {
     e.preventDefault()
 
     try {
-      const { data } = await axios.post('http://localhost:3001/register', {
+      await axios.post(`${api}/register`, {
         email: values.email,
         password: values.password
       })
@@ -50,7 +51,6 @@ export default function SignUp() {
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <a href="#" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-          {/* <img className="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo" /> */}
           Oceanz    
         </a>
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">

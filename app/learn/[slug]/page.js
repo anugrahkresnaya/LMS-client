@@ -24,13 +24,13 @@ const Learn = ({params}) => {
     state: { user }
   } = useContext(Context)
 
-  console.log(user)
+  const api = process.env.NEXT_PUBLIC_ORIGIN_API
 
   const defaultLayoutPluginInstance = defaultLayoutPlugin()
 
   useEffect(() => {
     const getCourseData = () => {
-      axios.get(`http://localhost:3001/course/${params.slug}`, {
+      axios.get(`${api}/course/${params.slug}`, {
         headers: {
           "Content-Type": 'application/json'
         },
@@ -44,7 +44,7 @@ const Learn = ({params}) => {
     getCourseData()
 
     const getInstructorData = () => {
-      axios.get(`http://localhost:3001/user/${courseData.instructorId}`)
+      axios.get(`${api}/user/${courseData.instructorId}`)
       .then(res => {
         setInstructorData(res.data.data[0])
       })
@@ -54,7 +54,7 @@ const Learn = ({params}) => {
     getInstructorData()
 
     const getUserData = () => {
-      axios.get(`http://localhost:3001/user/${user?.id}`)
+      axios.get(`${api}/user/${user?.id}`)
       .then(res => {
         console.log('result', res.data.data)
         setUserData(res.data.data[0])
@@ -67,7 +67,7 @@ const Learn = ({params}) => {
     getUserData()
 
     const getCommentData = () => {
-      axios.get(`http://localhost:3001/comments/${params?.slug}`)
+      axios.get(`${api}/comments/${params?.slug}`)
       .then(res => {
         console.log('comment', res.data.data)
         setCommentData(res.data.data)
@@ -78,7 +78,7 @@ const Learn = ({params}) => {
     }
 
     getCommentData()
-  }, [courseData?.instructorId, params?.slug, user?.id])
+  }, [api, courseData.instructorId, params.slug, user?.id])
 
   const handleActiveTab = (index) => {
     setActivateTab(index)
@@ -93,7 +93,7 @@ const Learn = ({params}) => {
   }
 
   const handleSubmitComment = async () => {
-    await axios.post(`http://localhost:3001/comment/${params?.slug}`, {
+    await axios.post(`${api}/comment/${params?.slug}`, {
       userId: user?.id,
       comment_content: commentInput,
       firstName: userData?.firstName,
@@ -117,7 +117,7 @@ const Learn = ({params}) => {
 
   const renderComment = commentData.map(item => {
     const handleDelete = async () => {
-      await axios.delete(`http://localhost:3001/comment/${item?.id}`)
+      await axios.delete(`${api}/comment/${item?.id}`)
       .then(res => {
         console.log(res)
         Swal.fire({
@@ -128,8 +128,6 @@ const Learn = ({params}) => {
           showConfirmButton: false,
           timer: 1000,
         })
-        // router.push(`/artikel/detail-artikel/${params.id}`)
-        // router.refresh()
       })
       .catch(err => {
         console.log(err)

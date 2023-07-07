@@ -1,21 +1,17 @@
 'use client'
 import axios from "axios"
-// import { useRouter } from 'next/navigation'
-// import { useState } from 'react'
-import Link from "next/link"
 import { useEffect, useState, useContext } from "react"
 import { Context } from "@/context"
 import photo from "../../public/default.jpg"
 import Image from "next/image"
 import '../globals.css'
 import Swal from "sweetalert2"
-import { useRouter } from "next/navigation"
 
 export default function Dashboard() {
   const { state: { user }, dispatch } = useContext(Context)
 
-  const router = useRouter()
-  
+  const api = process.env.NEXT_PUBLIC_ORIGIN_API
+
   const [userRole, setUserRole] = useState([])
   const [activateTab, setActivateTab] = useState(0)
   const [userList, setUserlist] = useState([])
@@ -32,7 +28,7 @@ export default function Dashboard() {
     setActivateTab(index)
   }
   const getUserData = () => {
-    axios.get(`http://localhost:3001/user/${user?.id}`)
+    axios.get(`${api}/user/${user?.id}`)
     .then(res => {
       console.log('result', res.data.data[0])
       setUserRole(res.data.data[0].roleId)
@@ -43,7 +39,7 @@ export default function Dashboard() {
   }
 
   const getUserList = () => {
-    axios.get('http://localhost:3001/user/list')
+    axios.get(`${api}/user/list`)
     .then(res => {
       setUserlist(res.data.data)
     })
@@ -53,7 +49,7 @@ export default function Dashboard() {
   }
 
   const getCourseList = () => {
-    axios.get('http://localhost:3001/courses')
+    axios.get(`${api}/courses`)
     .then(res => {
       setCourseList(res.data.data)
     })
@@ -61,7 +57,7 @@ export default function Dashboard() {
 
   const handleDeleteUser = async (userId) => {
     try {
-      await axios.delete(`http://localhost:3001/user/delete/${userId}`, {
+      await axios.delete(`${api}/user/delete/${userId}`, {
         headers: {
           Authorization: `Bearer ${user.accessToken}`
         }
@@ -90,7 +86,7 @@ export default function Dashboard() {
 
   const handleDeleteCourse = async (courseId) => {
     try {
-      await axios.delete(`http://localhost:3001/course/delete/${courseId}`, {
+      await axios.delete(`${api}/course/delete/${courseId}`, {
         headers: {
           Authorization: `Bearer ${user.accessToken}`
         }

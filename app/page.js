@@ -1,7 +1,5 @@
 'use client'
 import axios from 'axios'
-import Image from 'next/image'
-import { useRouter } from 'next/navigation'
 import { useEffect, useState, useContext } from 'react'
 import { Context } from "@/context"
 import CourseList from '@/components/courseList'
@@ -11,9 +9,11 @@ export default function Home() {
   const [userData, setUserData] = useState([])
   const [listData, setListData] = useState([])
 
+  const api = process.env.NEXT_PUBLIC_ORIGIN_API
+
   useEffect(() => {
     if (user) {
-      axios.get(`http://localhost:3001/user/${user.id}`, {
+      axios.get(`${api}/user/${user.id}`, {
         headers: {
           "Authorization": `Bearer ${user.accessToken}`
         }
@@ -28,7 +28,7 @@ export default function Home() {
   }, [user])
 
   const getCourseList = () => {
-    axios.get('http://localhost:3001/courses')
+    axios.get(`${api}/courses`)
     .then(res => {
       setListData(res.data.data)
     })
@@ -37,12 +37,8 @@ export default function Home() {
     })
   }
 
-  console.log('user data', userData)
-
   const isLoggedIn = user?.accessToken
-  console.log(isLoggedIn)
-  const router = useRouter()
-
+  
   const limitListData = listData.slice(0, 4)
 
   const renderListCourse = limitListData.map(list => {
@@ -69,7 +65,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-      {/* <button onClick={() => router.push('/dashboard')}>dashboard</button> */}
       <div>
         <h1 className='text-center mt-5 font-bold text-5xl'>Courses</h1>
         <div className='flex justify-center m-5'>

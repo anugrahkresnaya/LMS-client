@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation"
 import { Context } from "@/context"
 
 export default function Login() {
+  const api = process.env.NEXT_PUBLIC_ORIGIN_API
   const router = useRouter()
   const [values, setValues] = useState({
     email: "",
@@ -23,7 +24,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const { data } = await axios.post('http://localhost:3001/login', {
+      const { data } = await axios.post(`${api}/login`, {
         email: values.email,
         password: values.password
       }, {

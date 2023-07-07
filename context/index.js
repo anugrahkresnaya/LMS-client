@@ -25,6 +25,8 @@ const rootReducer = (state, action) => {
 
 // context provider
 const Provider = ({children}) => {
+  const api = process.env.NEXT_PUBLIC_ORIGIN_API
+
   const [state, dispatch] = useReducer(rootReducer, initialState)
 
   const router = useRouter()
@@ -48,7 +50,7 @@ const Provider = ({children}) => {
       let res = error.response
       if(res.status === 401 && res.config && !res.config.__isRetryRequest) {
         return new Promise((resolve, reject) => {
-          axios.get("http://localhost:3001/logout")
+          axios.get(`${api}/logout`)
           .then((data) => {
             console.log('/401 error > logout')
             dispatch({ type: "LOGOUT" })
@@ -64,15 +66,6 @@ const Provider = ({children}) => {
       return Promise.reject(error)
     }
   )
-
-  // useEffect(() => {
-  //   const getCsrfToken = async () => {
-  //     const { data } = await axios.get("http://localhost:3001/csrf-token")
-  //     // console.log('csrf', data)
-  //     axios.defaults.headers["X-CSRF-Token"] = data.getCsrfToken
-  //   }
-  //   getCsrfToken()
-  // }, [])
 
   return (
     <Context.Provider value={{state, dispatch}}>
