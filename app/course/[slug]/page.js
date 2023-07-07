@@ -28,7 +28,7 @@ const Course = ({params}) => {
 
   useEffect(() => {
     const getCourseData = () => {
-      axios.get(`http://localhost:3001/course/${params.slug}`)
+      axios.get(`${api}/course/${params.slug}`)
       .then(res => {
         setCourseData(res.data.data)
       })
@@ -37,7 +37,7 @@ const Course = ({params}) => {
     getCourseData()
 
     const getInstructorData = () => {
-      axios.get(`http://localhost:3001/user/${courseData.instructorId}`)
+      axios.get(`${api}/user/${courseData.instructorId}`)
       .then(res => {
         setInstructorData(res.data.data[0])
       })
@@ -47,7 +47,7 @@ const Course = ({params}) => {
     getInstructorData()
 
     const getPurchasedAccess = () => {
-      axios.post('http://localhost:3001/access', {
+      axios.post(`${api}/access`, {
         courseId: courseData?.id
       })
       .then(res => {
@@ -83,7 +83,7 @@ const Course = ({params}) => {
       confirmButtonText: 'Buy'
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.post(`http://localhost:3001/course/${courseData.id}/order`, {
+        axios.post(`${api}/course/${courseData.id}/order`, {
           userId: user.id,
           instructorId: instructorData.id,
           slug: params?.slug

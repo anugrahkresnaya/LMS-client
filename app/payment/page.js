@@ -6,6 +6,8 @@ import Image from "next/image"
 import purchaseSuccess from '../../public/purchase-success.svg'
 
 export default function Payment() {
+  const api = process.env.NEXT_PUBLIC_ORIGIN_API
+
   const searchParams = useSearchParams()
 
   const order_id = searchParams.get('order_id')
@@ -17,7 +19,7 @@ export default function Payment() {
   }, [])
 
   const handleUpdateOrderStatus = () => {
-    axios.post(`http:localhost:3001/payment/updateStatus`, {
+    axios.post(`${api}/payment/updateStatus`, {
       order_id: order_id,
       transaction_status: transaction_status
     })
