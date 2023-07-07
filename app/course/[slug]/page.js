@@ -8,6 +8,7 @@ import axios from 'axios'
 import Link from 'next/link'
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/navigation'
+import Rating from '@/components/rating'
 
 const Course = ({params}) => {
   const { 
@@ -16,8 +17,14 @@ const Course = ({params}) => {
   const [courseData, setCourseData] = useState([])
   const [instructorData, setInstructorData] = useState([])
   const [orderData, setOrderData] = useState([])
+  const [ratingData, setRatingData] = useState([])
+  const [photoRating, setPhotoRating] = useState([])
 
   const router = useRouter()
+
+  const api = process.env.NEXT_PUBLIC_ORIGIN_API
+
+  console.log('api', api)
 
   useEffect(() => {
     const getCourseData = () => {
@@ -52,7 +59,18 @@ const Course = ({params}) => {
     }
 
     getPurchasedAccess()
-  }, [courseData?.id, courseData.instructor, courseData.instructorId, params.slug])
+
+    const getRatingData = () => {
+      axios.get(`${api}/ratingsBySlug/${params.slug}`)
+      .then(res => {
+        console.log('rating data', res.data)
+        setRatingData(res.data.data)
+      })
+      .catch(error => console.log('rating API: ', error))
+    }
+
+    getRatingData()
+  }, [api, courseData?.id, courseData.instructor, courseData.instructorId, params.slug])
 
   const handleCheckout = async () => {
     Swal.fire({
@@ -97,10 +115,18 @@ const Course = ({params}) => {
     })
   }
 
-  console.log('course id', courseData.id)
-  console.log(' user state id', user?.id)
-  console.log('user id from order data', orderData?.id)
-  console.log('status', orderData?.status)
+  const renderRating = ratingData.map(item => {
+    return(
+        <Rating
+          key={item.id}
+          rating={item.value}
+          firstName={item.firstName}
+          lastName={item.lastName}
+          review={item.review}
+          photo={item.photoProfile}
+        />
+    )
+  })
 
   return(
     <div>
@@ -135,13 +161,20 @@ const Course = ({params}) => {
           ) : (
             <div className='flex flex-col'>
               {(user?.id === orderData.userId && orderData.status === 'settlement') ? (
-                <Link className="btn btn-active btn-primary mb-5" href={`/learn/${params.slug}`}>Go to course</Link>
+                <div className="flex flex-col">
+                  <Link className="btn btn-active btn-primary mb-5" href={`/learn/${params.slug}`}>Go to course</Link>
+                  <Link className="btn btn-active btn-primary" href={`/course/rating/${params.slug}`}>Give rating</Link>
+                </div>
               ) : (
                 <button className="btn btn-active btn-primary mb-5" onClick={handleCheckout}>Buy this course</button>
               )}
             </div>
           )}
         </div>
+      </div>
+      <div className='flex flex-col mx-auto items-center bg-base-300 pt-5'>
+        <h1 className='text-center mb-5 font-bold text-4xl'>Review</h1>
+        {renderRating}
       </div>
     </div>
   )
