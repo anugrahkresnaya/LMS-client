@@ -2,6 +2,7 @@
 import axios from "axios";
 import { useReducer, createContext, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Swal from 'sweetalert2'
 
 // initial state
 const initialState = {
@@ -53,6 +54,14 @@ const Provider = ({children}) => {
           axios.get(`${api}/logout`)
           .then((data) => {
             console.log('/401 error > logout')
+            Swal.fire({
+              position: "center",
+              title: "Unauthorized",
+              icon: "error",
+              text: "You are unauthorized",
+              showConfirmButton: false,
+              timer: 2000,
+            })
             dispatch({ type: "LOGOUT" })
             window.localStorage.removeItem("user")
             router.push('/signin')

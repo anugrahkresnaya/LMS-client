@@ -65,20 +65,19 @@ export default function Profile() {
       userId: user?.id
     })
     .then(res => {
-      console.log('settle', res.data.data)
-      setEnrolledData(res.data.data)
+      setEnrolledData(res.data?.data)
     })
   }
 
-  const renderEnroll = enrolledData.map(item => {
-    const words = item.slug.split("-");
+  const renderEnroll = enrolledData?.map(item => {
+    const words = item?.slug.split("-");
     const capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
     const capitalizedTitle = capitalizedWords.join(" ")
 
     return(
-      <div key={item.id} className="card w-96 bg-base-300 shadow-xl mt-5 mr-5">
+      <div key={item?.id} className="card w-96 bg-base-300 shadow-xl mt-5 mr-5">
         <div className="card-body">
-          <Link href={`/course/${item.slug}`}>
+          <Link href={`/course/${item?.slug}`}>
             <h1 className='font-bold text-xl text-center'>{capitalizedTitle}</h1>
           </Link>
         </div>
