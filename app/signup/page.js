@@ -36,7 +36,7 @@ export default function SignUp() {
         password: values.password
       })
       Swal.fire({
-        position: "top-end",
+        position: "center",
         title: "Successfull!",
         icon: "success",
         text: "Sign up Successfull",
@@ -64,15 +64,35 @@ export default function SignUp() {
             </h1>
             <form className="space-y-4 md:space-y-6" action="/register" method="post" onSubmit={handleSubmit}>
               <div>
-                <label htmlFor="email" className="block mb-2 text-sm font-medium">Your email</label>
-                <input type="email" name="email" id="email" onChange={(e)=>setValues({...values,email:e.target.value})} className="bg-gray-50 input input-bordered input-primary sm:text-sm rounded-lg block w-full p-2.5" placeholder="name@email.com" required />
+                <label htmlFor="email" className="block mb-2 text-sm font-medium">Email</label>
+                <input 
+                  type="email" 
+                  name="email" 
+                  id="email" 
+                  onChange={(e)=>setValues({...values,email:e.target.value})} 
+                  className="bg-gray-50 input input-bordered input-primary sm:text-sm rounded-lg block w-full p-2.5" 
+                  placeholder="name@email.com" 
+                  required 
+                />
               </div>
               <div>
                 <label htmlFor="password" className="block mb-2 text-sm font-medium">Password</label>
-                <input type={showPassword ? 'text' : 'password'} name="password" id="password" placeholder="••••••••" onChange={(e)=>setValues({...values,password:e.target.value})} className="bg-gray-50 input input-bordered input-primary sm:text-sm rounded-lg block w-full p-2.5" required />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  id="password"
+                  placeholder="••••••••"
+                  onChange={(e)=>setValues({...values,password:e.target.value})}
+                  className="bg-gray-50 input input-bordered input-primary sm:text-sm rounded-lg block w-full p-2.5"
+                  required 
+                />
                 <label className="label">
                   <span className="label-text">Show password</span> 
-                  <input type="checkbox" onClick={toggleShowPassword} className="checkbox checkbox-primary" />
+                  <input 
+                    type="checkbox"
+                    onClick={toggleShowPassword}
+                    className="checkbox checkbox-primary"
+                  />
                 </label>
               </div>
               <button type="submit" className="btn btn-primary w-full">Sign up</button>

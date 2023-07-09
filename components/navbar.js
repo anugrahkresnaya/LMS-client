@@ -46,7 +46,7 @@ export default function Navbar() {
       credentials: 'same-origin'
     })
     Swal.fire({
-      position: 'top-end',
+      position: 'center',
       icon: 'success',
       title: 'Sign Out success',
       showConfirmButton: false,

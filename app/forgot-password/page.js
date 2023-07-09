@@ -3,6 +3,8 @@ import axios from "axios"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Swal from "sweetalert2"
+import Image from "next/image"
+import logo from "@/public/logo-white.png"
 
 const ForgotPassword = () => {
   const api = process.env.NEXT_PUBLIC_ORIGIN_API
@@ -31,14 +33,30 @@ const ForgotPassword = () => {
     })
   }
   return (
-    <div className="min-h-screen">
-      <h1>Forgot your password?</h1>
-      <p>input your email address, so we can send the link to your email for reset password</p>
-      <form method="post" onSubmit={handleSendEmail}>
-        <input type="email" name="email" id="email" onChange={(e) => setEmail(e.target.value)} />
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+    <section>
+      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <Image src={logo} width={200} height={200} alt="oceanz" className="flex items-center mb-6 " />
+        <div className="w-full bg-base-300 rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
+          <div className="p-6 space-y-4 md:space-y-6 sm:p-8 text-center">
+            <h1 className="text-xl font-bold leading-tight tracking-tight md:text-2xl">
+              Forgot password?
+            </h1>
+            <p>No worries, we will send you reset link to you email</p>
+            <form className="space-y-4 md:space-y-6 flex flex-col" method="post" onSubmit={handleSendEmail}>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                placeholder="Enter your email"
+                onChange={(e) => setEmail(e.target.value)}
+                className="input input-bordered input-primary"
+              />
+              <button type="submit" className="btn btn-primary">Reset password</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
   )
 }
 

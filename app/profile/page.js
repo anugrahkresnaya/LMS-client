@@ -15,13 +15,15 @@ export default function Profile() {
   const [userData, setUserData] = useState([])
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
-  const [birthDay, setBirthDay] = useState("")
-  const [gender, setGender] = useState("")
-  const [phoneNumber, setPhoneNumber] = useState("")
+  const [birthDay, setBirthDay] = useState(null)
+  const [gender, setGender] = useState("male")
+  const [phoneNumber, setPhoneNumber] = useState(null)
   const [photoProfile, setPhotoProfile] = useState(null)
   const [activateTab, setActivateTab] = useState(0)
   const [createdCourse, setCreatedCourse] = useState([])
   const [enrolledData, setEnrolledData] = useState([])
+
+  console.log('no', phoneNumber)
 
   const {
     state: { user },
@@ -103,7 +105,8 @@ export default function Profile() {
         lastName: lastName,
         dateOfBirth: birthDay,
         gender: gender,
-        photoProfile: photoProfile
+        photoProfile: photoProfile,
+        phoneNumber: phoneNumber
       },
       {
         headers: {
@@ -123,7 +126,7 @@ export default function Profile() {
       window.localStorage.setItem("user", JSON.stringify(data))
 
       Swal.fire({
-        position: "top-end",
+        position: "center",
         title: "Successfull!",
         icon: "success",
         text: "Update Successfull",
@@ -214,11 +217,28 @@ export default function Profile() {
                     <div className='flex flex-row mb-5'>
                       <div className='flex flex-col mr-5'>
                         <label htmlFor="firstName">First Name</label>
-                        <input type="text" name="firstName" value={firstName} onChange={(e) => {setFirstName(e.target.value)}} placeholder="Your first name" id="firstName" className='input input-bordered input-primary w-96' />
+                        <input 
+                          type="text"
+                          name="firstName"
+                          value={firstName}
+                          onChange={(e) => {setFirstName(e.target.value)}}
+                          placeholder="Your first name"
+                          id="firstName"
+                          className='input input-bordered input-primary w-96'
+                          required
+                        />
                       </div>
                       <div className='flex flex-col mr-5'>
                         <label htmlFor="lastName">Last Name</label>
-                        <input type="text" name="lastName" value={lastName} onChange={(e) => {setLastName(e.target.value)}} placeholder="Your last name"  id="lastName" className='input input-bordered input-primary w-96' />
+                        <input
+                          type="text"
+                          name="lastName"
+                          value={lastName}
+                          onChange={(e) => {setLastName(e.target.value)}}
+                          placeholder="Your last name"
+                          id="lastName"
+                          className='input input-bordered input-primary w-96'
+                        />
                       </div>
                     </div>
                     <div className='flex flex-row mb-5'>
@@ -229,9 +249,9 @@ export default function Profile() {
                       <div className='flex flex-col mr-5'>
                         <label htmlFor="gender">Gender</label>
                         <select className="select select-primary w-96" value={gender} onChange={(e) => {setGender(e.target.value)}}>
-                          <option disabled selected>Select your gender</option>
-                          <option>Male</option>
-                          <option>Female</option>
+                          <option disabled selected value={null}>Select your gender</option>
+                          <option value="male">Male</option>
+                          <option value="female">Female</option>
                         </select>
                       </div>
                     </div>
@@ -242,7 +262,7 @@ export default function Profile() {
                       </div>
                       <div className='flex flex-col  mr-5'>
                         <label htmlFor="phoneNumber">Mobile Number</label>
-                        <input type="text" name="phoneNumber" value={phoneNumber} onChange={(e) => {setPhoneNumber(e.target.value)}} placeholder="Your first name" id="phoneNumber" className='input input-bordered input-primary w-96' />
+                        <input type="text" name="phoneNumber" value={phoneNumber} onChange={(e) => {setPhoneNumber(e.target.value)}} placeholder="Your mobile number" id="phoneNumber" className='input input-bordered input-primary w-96' />
                       </div>
                     </div>
                     <div className='flex flex-col mb-5'>
@@ -253,7 +273,7 @@ export default function Profile() {
                   </form>
                 </div>
                 <div className="card ml-20 w-96 bg-base-300">
-                  <figure><Image width={600} height={200} src={profileCover} className='object-cover' alt="car!"/></figure>
+                  <figure><Image width={600} height={200} src={profileCover} className='object-cover' alt="profile cover"/></figure>
                   <div className="card-body pt-0">
                     <div className="avatar justify-center -mt-[50px]">
                       <div className="w-24 rounded-full ring ring-primary-focus ring-offset-base-100 ring-offset-2">
