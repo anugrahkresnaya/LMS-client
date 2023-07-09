@@ -92,7 +92,7 @@ export default function Navbar() {
         <option value="forest">Forest</option>
         <option value="night">Night</option>
         <option value="valentine">Valentine</option>
-        <option value="Dracula">Dracula</option>
+        <option value="dracula">Dracula</option>
         <option value="lofi">Lofi</option>
         <option value="synthwave">Synthwave</option>
       </select>
