@@ -3,6 +3,8 @@ import axios from "axios"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import Swal from "sweetalert2"
+import Image from "next/image"
+import logo from "@/public/logo-white.png"
 
 const ResetPassword = ({params}) => {
   const api = process.env.NEXT_PUBLIC_ORIGIN_API
@@ -34,22 +36,34 @@ const ResetPassword = ({params}) => {
   }
 
   return (
-    <div className="min-h-screen">
-      <h1>Reset Password</h1>
-      <form method="post" onSubmit={handleReset}>
-        <div className="flex flex-row">
-          <input
-            type={showPassword ? 'text' : 'password'}
-            name="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)} 
-          />
-          <button type="submit">Reset</button>
+    <section>
+      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <Image src={logo} width={200} height={200} alt="oceanz" className="flex items-center mb-6 " />
+        <div className="w-full bg-base-300 rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
+          <div className="p-6 space-y-4 md:space-y-6 sm:p-8 text-center">
+            <h1 className="text-xl font-bold leading-tight tracking-tight md:text-2xl">
+              Reset Password
+            </h1>
+            <p>Enter your new password</p>
+            <form className="space-y-4 md:space-y-6 flex flex-col" method="post" onSubmit={handleReset}>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                name="password"
+                id="password"
+                value={password}
+                placeholder="••••••"
+                onChange={(e) => setPassword(e.target.value)}
+                className="input input-bordered input-primary"
+              />
+              <div className="flex flex-row">
+                <input type="checkbox" onClick={toggleShowPassword} className="mr-2" />show password
+              </div>
+              <button type="submit" className="btn btn-primary">Submit</button>
+            </form>
+          </div>
         </div>
-        <input type="checkbox" onClick={toggleShowPassword} />show password
-      </form>
-    </div>
+      </div>
+    </section>
   )
 }
 
