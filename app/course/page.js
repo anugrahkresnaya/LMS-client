@@ -15,23 +15,25 @@ const Course = () => {
   const api = process.env.NEXT_PUBLIC_ORIGIN_API
 
   useEffect(() => {
+    const getCourseList = () => {
+      axios.get(`${api}/courses`)
+      .then(res => {
+        setListData(res.data.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    }
+    
     getCourseList()
-  }, [])
-  const getCourseList = () => {
-    axios.get(`${api}/courses`)
-    .then(res => {
-      setListData(res.data.data)
-    })
-    .catch(error => {
-      console.log(error)
-    })
-  }
+  }, [api])
+
 
   const handleSearch = async (e) => {
     e.preventDefault()
     setLoading(true)
     try {
-      axios.get(`${api}/searchCourses?search=${keyword}`)
+      axios.get(`${api}/searchCourses?keyword=${keyword}`)
       .then(res => {
         console.log('search', res)
         setSearchData(res.data)
