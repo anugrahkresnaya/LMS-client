@@ -1,7 +1,6 @@
 'use client'
 import { useEffect, useState, useContext } from "react"
 import axios from "axios"
-// import Image from "next/image"
 import { Viewer, Worker } from '@react-pdf-viewer/core';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
@@ -10,7 +9,8 @@ import Image from "next/image";
 import profile from '../../../public/default.jpg'
 import Swal from "sweetalert2";
 import { FaTrash } from "react-icons/fa"
-const { Context } = require("@/context")
+import { Context } from "@/context";
+import packageJson from '@/package.json'
 
 const Learn = ({params}) => {
   const [courseData, setCourseData] = useState([])
@@ -25,6 +25,8 @@ const Learn = ({params}) => {
   } = useContext(Context)
 
   const api = process.env.NEXT_PUBLIC_ORIGIN_API
+
+  const pdfjsVersion = packageJson.dependencies['pdfjs-dist']
 
   const defaultLayoutPluginInstance = defaultLayoutPlugin()
 
@@ -179,7 +181,7 @@ const Learn = ({params}) => {
       )}
       {activateTab === 1 && (
         <div>
-          <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+          <Worker workerUrl={`https://unpkg.com/pdfjs-dist@${pdfjsVersion}/build/pdf.worker.min.js`}>
             <div className="mx-auto w-[800px] h-[1000]">
               <Viewer fileUrl={courseData.pdf} plugins={[defaultLayoutPluginInstance]} />
             </div>

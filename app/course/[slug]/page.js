@@ -18,7 +18,6 @@ const Course = ({params}) => {
   const [instructorData, setInstructorData] = useState([])
   const [orderData, setOrderData] = useState([])
   const [ratingData, setRatingData] = useState([])
-  const [photoRating, setPhotoRating] = useState([])
 
   const router = useRouter()
 
@@ -73,7 +72,7 @@ const Course = ({params}) => {
     }
 
     getRatingData()
-  }, [api, courseData?.id, courseData.instructor, courseData.instructorId, orderData.id, params.slug])
+  }, [api, courseData?.id, courseData.instructor, courseData.instructorId, orderData.id, params.slug, user?.id])
 
   const handleCheckout = async () => {
     Swal.fire({
