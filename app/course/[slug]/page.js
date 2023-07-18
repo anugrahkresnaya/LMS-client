@@ -130,12 +130,6 @@ const Course = ({params}) => {
     )
   })
 
-  console.log('user id', user.id)
-  console.log('order user id', orderData.userId)
-  console.log('order status', orderData.status)
-  console.log('match user id', user.id === orderData.userId)
-  console.log('get settlement true', orderData.status === 'settlement')
-
   return(
     <div>
       <div>
