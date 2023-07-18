@@ -130,12 +130,6 @@ const Course = ({params}) => {
     )
   })
 
-  console.log('user id', user.id)
-  console.log('order user id', orderData.userId)
-  console.log('order status', orderData.status)
-  console.log('match user id', user.id === orderData.userId)
-  console.log('get settlement true', orderData.status === 'settlement')
-
   return(
     <div>
       <div>
@@ -161,14 +155,14 @@ const Course = ({params}) => {
         <div className='flex-col ml-20 bg-base-300 p-5 mb-5 rounded-xl'>
           <h1 className='mb-5'>Price: {courseData.price === 0 ? 'FREE' : `Rp ${courseData.price}`}</h1>
           <h1 className='mb-5'>Instructor: {`${instructorData.firstName} ${instructorData.lastName}` || 'anonymous'}</h1>
-          {user.id === instructorData.id ? (
+          {user?.id === instructorData.id ? (
             <div className='flex flex-col'>
               <Link className="btn btn-active btn-primary mb-5" href={`/learn/${params.slug}`}>Go to course</Link>
               <Link className="btn btn-active btn-primary mb-5" href={`/course/update-course/${params.slug}`}>Edit your course</Link>
             </div>
           ) : (
             <div className='flex flex-col'>
-              {(user.id === orderData.userId && orderData.status === 'settlement') ? (
+              {(user?.id === orderData.userId && orderData.status === 'settlement') ? (
                 <div className="flex flex-col">
                   <Link className="btn btn-active btn-primary mb-5" href={`/learn/${params.slug}`}>Go to course</Link>
                   <Link className="btn btn-active btn-primary" href={`/course/rating/${params.slug}`}>Give rating</Link>
