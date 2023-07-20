@@ -9,8 +9,8 @@ const CourseUpdate= ({params}) => {
   const api = process.env.NEXT_PUBLIC_ORIGIN_API
   const router = useRouter()
   const [values, setValues] = useState({
-    title: '',
-    description: '',
+    title: null,
+    description: null,
     paid: true,
     price: 0,
   })
@@ -105,6 +105,7 @@ const CourseUpdate= ({params}) => {
               className="select select-primary w-full mt-5"
               value={values.paid}
               onChange={(v) => setValues({ ...values, paid: !values.paid })}
+              required
             >
               <option disabled selected>Is it paid or free?</option>
               <option value={true}>Paid</option>
@@ -119,6 +120,7 @@ const CourseUpdate= ({params}) => {
                   placeholder="Rp."
                   onChange={(e) => setValues({ ...values, price: e.target.value })}
                   className="input input-bordered input-primary w-full mt-1"
+                  required
                 />
               </div>
             )}

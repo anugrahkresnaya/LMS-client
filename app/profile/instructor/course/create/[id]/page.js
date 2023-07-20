@@ -13,7 +13,7 @@ const CourseCreate = ({params}) => {
   const router = useRouter()
 
   const [values, setValues] = useState({
-    title: '',
+    title: null,
     description: '',
     paid: true,
     price: 0,
@@ -92,6 +92,7 @@ const CourseCreate = ({params}) => {
             value={values.title}
             onChange={(e) => setValues({ ...values, title: e.target.value })}
             className="input input-bordered input-primary w-full mt-5"
+            required
           />
           <textarea 
             name="description" 
