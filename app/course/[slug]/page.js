@@ -86,8 +86,8 @@ const Course = ({params}) => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios.post(`${api}/course/${courseData.id}/order`, {
-          userId: user.id,
-          instructorId: instructorData.id,
+          userId: user?.id,
+          instructorId: instructorData?.id,
           slug: params?.slug
         })
         .then(res => {

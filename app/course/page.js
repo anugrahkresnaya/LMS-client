@@ -4,6 +4,7 @@ import { useEffect, useState, useContext } from "react"
 import { Context } from "@/context"
 import axios from "axios"
 import Swal from "sweetalert2"
+import imageCourse from '@/public/course-default.jpg'
 
 const Course = () => {
   const { state: { user }, dispatch } = useContext(Context)
@@ -63,7 +64,7 @@ const Course = () => {
       <CourseList
         key={list.id}
         title={list.title}
-        image={list.image}
+        image={list?.image || imageCourse}
         price={list.price}
         params={list.slug}
         isLoggedIn={isLoggedIn}
@@ -76,7 +77,7 @@ const Course = () => {
       <CourseList
         key={item.id}
         title={item.title}
-        image={item.image}
+        image={item?.image || imageCourse}
         price={item.price}
         params={item.slug}
         isLoggedIn={isLoggedIn}

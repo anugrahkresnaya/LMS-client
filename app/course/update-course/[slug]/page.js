@@ -2,10 +2,14 @@
 // import Resizer from "react-image-file-resizer"
 import axios from "axios"
 import Swal from "sweetalert2"
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { Context } from "@/context"
 import { useRouter } from "next/navigation";
 
 const CourseUpdate= ({params}) => {
+  const {
+    state: { user }
+  } = useContext(Context)
   const api = process.env.NEXT_PUBLIC_ORIGIN_API
   const router = useRouter()
   const [values, setValues] = useState({
@@ -25,8 +29,6 @@ const CourseUpdate= ({params}) => {
     setImagePreview(imageFile)
   }
 
-  console.log('image preview'. imagePreview)
-
   const handleVideo = (e) => {
     let videoFile = e.target.files[0]
     setVideo(videoFile)
@@ -41,7 +43,7 @@ const CourseUpdate= ({params}) => {
     e.preventDefault()
     try {
       setLoading(true)
-      await axios.put(`${api}course/update/${params.slug}`, {
+      await axios.put(`${api}/course/update/${params.slug}`, {
         title: values.title,
         description: values.description,
         paid: values.paid,
@@ -52,7 +54,8 @@ const CourseUpdate= ({params}) => {
       },
       {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${user.accessToken}`
         }
       })
       Swal.fire({

@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 import { FaTrash } from "react-icons/fa"
 import { Context } from "@/context";
 import packageJson from '@/package.json'
+import noData from '@/public/no-data.png'
 
 const Learn = ({params}) => {
   const [courseData, setCourseData] = useState([])
@@ -175,17 +176,33 @@ const Learn = ({params}) => {
         <div className={`tab ${activateTab == 1 ? 'tab-active' : ''}`} onClick={() => handleActiveTab(1)}>PDF</div> 
       </div>
       {activateTab === 0 && (
-        <div className="bg-base-300 rounded-lg">
-          <video src={courseData.video} width={1280} height={720} controls alt="course video" className="mx-auto"></video>
+        <div>
+          {courseData.video === null ? (
+            <div className="flex flex-col justify-center items-center">
+              <Image src={noData} alt="no data" width={400} height={400} />
+              <h1>This course doesn&apos;t provide video course</h1>
+            </div>
+          ) : (
+            <div className="bg-base-300 rounded-lg">
+              <video src={courseData.video} width={1280} height={720} controls alt="course video" className="mx-auto"></video>
+            </div>
+          )}
         </div>
       )}
       {activateTab === 1 && (
         <div>
-          <Worker workerUrl={`https://unpkg.com/pdfjs-dist@${pdfjsVersion}/build/pdf.worker.min.js`}>
-            <div className="mx-auto w-[800px] h-[1000]">
-              <Viewer fileUrl={courseData.pdf} plugins={[defaultLayoutPluginInstance]} />
+          {courseData.pdf === null ? (
+            <div className="flex flex-col justify-center items-center">
+              <Image src={noData} alt="no data" width={400} height={400} />
+              <h1>This course doesn&apos;t provide pdf</h1>
             </div>
-          </Worker>
+          ) : (
+            <Worker workerUrl={`https://unpkg.com/pdfjs-dist@${pdfjsVersion}/build/pdf.worker.min.js`}>
+              <div className="mx-auto w-[800px] h-[1000]">
+                <Viewer fileUrl={courseData.pdf} plugins={[defaultLayoutPluginInstance]} />
+              </div>
+            </Worker>
+          )}
         </div>
       )}
       <div className="bg-base-300 mt-20 mb-10 p-5 rounded-lg">
