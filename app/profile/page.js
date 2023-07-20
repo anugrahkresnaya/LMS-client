@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from 'react'
 import profileCover from "../../public/profile-cover.jpg"
 import { Context } from '@/context'
 import defaultPhoto from '../../public/default.jpg'
+import imageCourse from '@/public/course-default.jpg'
 import Swal from 'sweetalert2'
 import Link from 'next/link'
 
@@ -176,7 +177,7 @@ export default function Profile() {
       <div key={course.id} className="card w-96 bg-base-100 m-5 shadow-xl">
         <figure>
           <Link href={`/course/${course.slug}`}>
-            <Image src={course.image} alt="Course" width={400} height={400} />
+            <Image src={course?.image || imageCourse} alt="Course" width={400} height={400} />
           </Link>
         </figure>
         <div className="card-body bg-base-300">

@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useEffect, useState, useContext } from 'react'
 import { Context } from "@/context"
 import CourseList from '@/components/courseList'
+import imageCourse from '@/public/course-default.jpg'
 
 export default function Home() {
   const { state: { user }, dispatch } = useContext(Context)
@@ -46,7 +47,7 @@ export default function Home() {
         <CourseList 
           key={list.id}
           title={list.title}
-          image={list.image}
+          image={list?.image || imageCourse}
           price={list.price}
           params={list.slug}
           isLoggedIn={isLoggedIn}
@@ -55,13 +56,12 @@ export default function Home() {
     })
   return (
     <div>
-      <div className="hero min-h-screen" style={{ backgroundImage: `url(/test.jpg)` }}>
+      <div className="hero min-h-screen" style={{ backgroundImage: `url(/home_hero.png)` }}>
         <div className="hero-overlay bg-opacity-60"></div>
         <div className="hero-content text-center text-neutral-content">
           <div className="max-w-md">
             <h1 className="mb-5 text-5xl font-bold">{isLoggedIn ? `Hello, ${userData?.firstName || 'anonymous'} ${userData?.lastName}` : 'Hello there!'}</h1>
-            <p className="mb-5">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
-            <button className="btn btn-primary">Get Started</button>
+            <p className="mb-5">Welcome to Oceanz! You can either learn from the course or contribute to upload your course in here.</p>
           </div>
         </div>
       </div>
