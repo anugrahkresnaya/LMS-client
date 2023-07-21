@@ -64,7 +64,7 @@ export default function Profile() {
   }
 
   const getCourseBySettlement = () => {
-    axios.post('${api}/getCourseBySettlement', {
+    axios.post(`${api}/getCourseBySettlement`, {
       userId: user?.id
     })
     .then(res => {
@@ -209,13 +209,13 @@ export default function Profile() {
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col">
           <label htmlFor="my-drawer-2" className="btn btn-primary drawer-button lg:hidden">Open drawer</label>
-          <div className='flex flex-row'>
+          <div className='flex flex-row flex-wrap'>
             {activateTab === 0 ? (
               <>
                 <div className='pl-5 mr-5 bg-base-300 rounded-md mockup-window'>
                   <h1 className="my-5">General Information</h1>
                   <form action="/profile" encType='multipart/form-data' method='post' className='flex-col' onSubmit={handleUpdate}>
-                    <div className='flex flex-row mb-5'>
+                    <div className='flex flex-row flex-wrap mb-5'>
                       <div className='flex flex-col mr-5'>
                         <label htmlFor="firstName">First Name</label>
                         <input 
@@ -273,7 +273,7 @@ export default function Profile() {
                     <button type="submit" className="btn btn-primary mb-5">Save All</button>
                   </form>
                 </div>
-                <div className="card ml-20 w-96 bg-base-300">
+                <div className="card min-[1725px]:ml-20 max-[1553px]:my-10 w-96 bg-base-300">
                   <figure><Image width={600} height={200} src={profileCover} className='object-cover' alt="profile cover"/></figure>
                   <div className="card-body pt-0">
                     <div className="avatar justify-center -mt-[50px]">
