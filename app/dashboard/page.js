@@ -6,9 +6,12 @@ import photo from "../../public/default.jpg"
 import Image from "next/image"
 import '../globals.css'
 import Swal from "sweetalert2"
+import { useRouter } from "next/navigation"
 
 export default function Dashboard() {
-  const { state: { user }, dispatch } = useContext(Context)
+  const { state: { user } } = useContext(Context)
+
+  const router = useRouter()
 
   const api = process.env.NEXT_PUBLIC_ORIGIN_API
 
@@ -53,6 +56,9 @@ export default function Dashboard() {
     .then(res => {
       setCourseList(res.data.data)
     })
+    .catch(error => {
+      console.log(error)
+    })
   }
 
   const handleDeleteUser = async (userId) => {
@@ -71,6 +77,7 @@ export default function Dashboard() {
         showConfirmButton: false,
         timer: 2000,
       })
+      router.push('/')
     } catch (error) {
       console.log(error)
       Swal.fire({
@@ -99,6 +106,7 @@ export default function Dashboard() {
         showConfirmButton: false,
         timer: 2000,
       })
+      router.push('/')
     } catch (error) {
       console.log(error)
       Swal.fire({
@@ -120,7 +128,7 @@ export default function Dashboard() {
           <div className="flex items-center space-x-3">
             <div className="avatar">
               <div className="mask mask-squircle w-12 h-12">
-                <Image src={list.photoProfile || photo.src} alt="Avatar Tailwind CSS Component" width={48} height={48} />
+                <Image src={list.photoProfile || photo.src} alt="Avatar" width={48} height={48} />
               </div>
             </div>
             <div>
@@ -165,7 +173,7 @@ export default function Dashboard() {
   return (
     <div>
       {userRole === 2 ? (
-        <div className="drawer lg:drawer-open bg-base-200">
+        <div className="drawer lg:drawer-open bg-base-200 overflow-x-hidden">
           <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content flex flex-col">
             {/* Page content here */}
@@ -173,8 +181,8 @@ export default function Dashboard() {
             {activateTab === 0 ? (
               <div className="mt-5 mr-5">
                 <h1 className="font-bold text-xl">User List</h1>
-                <div className="overflow-x-auto">
-                  <table className="table w-full">
+                <div className="max-[1023px]:w-[100vw] min-[1024px]:w-[70vw] overflow-x-auto">
+                  <table className="table">
                     <thead>
                       <tr>
                         <th>User ID</th>
@@ -194,9 +202,9 @@ export default function Dashboard() {
               </div>
             ) : (
               <div className="mt-5 mr-5">
-                <h1 className="font-bold text-xl">User List</h1>
-                <div className="w-96">
-                  <table className="">
+                <h1 className="font-bold text-xl">Course List</h1>
+                <div className="max-[1023px]:w-[100vw] min-[1024px]:w-[70vw] overflow-x-auto">
+                  <table className="table">
                     <thead>
                       <tr className="rounded">
                         <th>Course ID</th>
