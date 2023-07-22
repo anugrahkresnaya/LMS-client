@@ -14,9 +14,9 @@ export default function Home() {
 
   useEffect(() => {
     if (user) {
-      axios.get(`${api}/user/${user.id}`, {
+      axios.get(`${api}/user/${user?.id}`, {
         headers: {
-          "Authorization": `Bearer ${user.accessToken}`
+          "Authorization": `Bearer ${user?.accessToken}`
         }
       })
       .then(res => {

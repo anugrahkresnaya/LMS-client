@@ -12,6 +12,7 @@ import { FaTrash } from "react-icons/fa"
 import { Context } from "@/context";
 import packageJson from '@/package.json'
 import noData from '@/public/no-data.png'
+import { useRouter } from "next/navigation";
 
 const Learn = ({params}) => {
   const [courseData, setCourseData] = useState([])
@@ -24,6 +25,12 @@ const Learn = ({params}) => {
   const {
     state: { user }
   } = useContext(Context)
+
+  const router = useRouter()
+
+  if (!user) {
+    router.push('/signin')
+  }
 
   const api = process.env.NEXT_PUBLIC_ORIGIN_API
 
@@ -102,6 +109,10 @@ const Learn = ({params}) => {
       firstName: userData?.firstName,
       lastName: userData?.lastName,
       image: userData?.photoProfile,
+    }, {
+      headers: {
+        Authorization: `Bearer ${user?.accessToken}`
+      }
     })
     .then(() => {
       Swal.fire({
@@ -112,6 +123,7 @@ const Learn = ({params}) => {
         showConfirmButton: false,
         timer: 1000,
       })
+      router.push(`/course/${params.slug}`)
     })
     .catch(err => {
       console.log(err)
@@ -131,6 +143,7 @@ const Learn = ({params}) => {
           showConfirmButton: false,
           timer: 1000,
         })
+        router.push(`/course/${params.slug}`)
       })
       .catch(err => {
         console.log(err)
