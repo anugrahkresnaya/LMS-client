@@ -48,7 +48,8 @@ const Course = ({params}) => {
     const getPurchasedAccess = () => {
       axios.post(`${api}/access`, {
         courseId: courseData?.id,
-        userId: user?.id
+        userId: user?.id,
+        status: 'settlement'
       })
       .then(res => {
         setOrderData(res.data.data)
