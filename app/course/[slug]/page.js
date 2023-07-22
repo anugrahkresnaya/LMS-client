@@ -36,7 +36,7 @@ const Course = ({params}) => {
     getCourseData()
 
     const getInstructorData = () => {
-      axios.get(`${api}/user/${courseData.instructorId}`)
+      axios.get(`${api}/user/${courseData?.instructorId}`)
       .then(res => {
         setInstructorData(res.data.data[0])
       })
@@ -51,8 +51,6 @@ const Course = ({params}) => {
         userId: user?.id
       })
       .then(res => {
-        console.log('course id access', orderData.id)
-        console.log('get access', res)
         setOrderData(res.data.data)
       })
       .catch(error => {
@@ -89,6 +87,10 @@ const Course = ({params}) => {
           userId: user?.id,
           instructorId: instructorData?.id,
           slug: params?.slug
+        }, {
+          headers: {
+            Authorization: `Bearer ${user?.accessToken}`
+          }
         })
         .then(res => {
           if (res.data.data.redirectUrl === null) {

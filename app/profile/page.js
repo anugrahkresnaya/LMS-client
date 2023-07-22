@@ -8,6 +8,7 @@ import defaultPhoto from '../../public/default.jpg'
 import imageCourse from '@/public/course-default.jpg'
 import Swal from 'sweetalert2'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 export default function Profile() {
   const api = process.env.NEXT_PUBLIC_ORIGIN_API
@@ -24,12 +25,12 @@ export default function Profile() {
   const [createdCourse, setCreatedCourse] = useState([])
   const [enrolledData, setEnrolledData] = useState([])
 
-  console.log('no', phoneNumber)
-
   const {
     state: { user },
     dispatch
   } = useContext(Context)
+
+  const router = useRouter()
 
   useEffect(() => {
     getUser()
@@ -41,7 +42,6 @@ export default function Profile() {
     try {
       if(user) {
         const { data } = await axios.get(`${api}/user/${user.id}`)
-        console.log('user data', data.data);
         setHidden(false)
         setUserData(data.data)
       }
@@ -120,11 +120,21 @@ export default function Profile() {
         credentials: 'include'
       })
 
+      console.log('data state', data)
+      console.log('type', typeof data)
+
+      const dataState = data.data
+
+      dataState.accessToken = user?.accessToken
+      dataState.id = user?.id
+      dataState.role = user?.role
+      dataState.user = user?.user
+      
       dispatch({
         type: "LOGIN",
-        payload: data,
+        payload: dataState,
       })
-      window.localStorage.setItem("user", JSON.stringify(data))
+      window.localStorage.setItem("user", JSON.stringify(dataState))
 
       Swal.fire({
         position: "center",
@@ -134,7 +144,7 @@ export default function Profile() {
         showConfirmButton: false,
         timer: 2000,
       })
-      // router.push("/")
+      router.push("/")
     } catch (error) {
       const errMsg = error.response?.data.error?.message
       if(errMsg !== undefined) {
