@@ -3,7 +3,8 @@ import { useEffect } from "react"
 import axios from "axios"
 import { useSearchParams } from "next/navigation"
 import Image from "next/image"
-import purchaseSuccess from '../../public/purchase-success.svg'
+import purchaseSuccess from '@/public/purchase-success.svg'
+import purchasePending from '@/public/purchase-pending.svg'
 
 export default function Payment() {
   const api = process.env.NEXT_PUBLIC_ORIGIN_API
@@ -29,14 +30,31 @@ export default function Payment() {
   
   return(
     <div className="min-h-screen">
-      <Image 
-        src={purchaseSuccess}
-        alt="purchase success"
-        width={800}
-        height={800}
-        className="flex justify-center mx-auto"
-      />
-      <h1 className="font-bold text-5xl text-center">You can check your course now</h1>
+      {transaction_status === 'settlement' && (
+        <div>
+          <Image 
+            src={purchaseSuccess}
+            alt="purchase success"
+            width={800}
+            height={800}
+            className="flex justify-center mx-auto"
+          />
+          <h1 className="font-bold text-5xl text-center">You can check your course now</h1>
+        </div>
+      )}
+      {transaction_status === 'pending' && (
+        <div>
+          <Image 
+            src={purchasePending}
+            alt="purchase pending"
+            width={800}
+            height={800}
+            className="flex justify-center mx-auto"
+          />
+          <h1 className="font-bold text-5xl text-center">Your purchased pending! You should retry to buy the course again</h1>
+          <p className="text-xl text-center">Or if you already purchased the course and didnt get the course access. try contact the admin.</p>
+        </div>
+      )}
     </div>
   )
 }
