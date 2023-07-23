@@ -1,5 +1,6 @@
 import Image from "next/image"
 import { FaStar } from "react-icons/fa"
+import defaultPhoto from '@/public/default.jpg'
 
 const Rating = ({ photo, firstName, lastName, rating, review }) => {
   const totalStars = 5
@@ -9,7 +10,7 @@ const Rating = ({ photo, firstName, lastName, rating, review }) => {
     <div className="flex flex-wrap bg-base-300 pl-5 sm:pl-0 mb-5">
       <figure>
         <Image 
-          src={photo}
+          src={photo || defaultPhoto}
           alt="profile"
           width={100}
           height={100}
@@ -17,7 +18,7 @@ const Rating = ({ photo, firstName, lastName, rating, review }) => {
         />
       </figure>
       <div className="">
-        <h1>{firstName} {lastName}</h1>
+        <h1>{firstName || 'Anonymous'} {lastName || ''}</h1>
         <div className="flex flex-row">
           {[...Array(totalStars)].map((_, index) => {
             const starValue = index + 1

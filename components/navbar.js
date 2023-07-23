@@ -2,7 +2,7 @@
 import Image from "next/image"
 import photo from '../public/default.jpg'
 import Link from "next/link"
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect } from "react"
 import { Context } from "@/context"
 import { useRouter } from "next/navigation"
 import axios from "axios"
@@ -12,29 +12,10 @@ import { themeChange } from 'theme-change'
 export default function Navbar() {
   const api = process.env.NEXT_PUBLIC_ORIGIN_API
   const { state: { user }, dispatch } = useContext(Context)
-  const [userRole, setUserRole] = useState([])
 
   useEffect(() => {
     themeChange(false)
-    getUser()
   }, [])
-
-  const getUser = () => {
-    if (user) {
-      axios.get(`${api}/user/${user.id}`, {
-        headers: {
-          "Authorization": `Bearer ${user.accessToken}`
-        }
-      })
-      .then(res => {
-        console.log('ini role', res.data.data[0].roleId)
-        setUserRole(res.data.data[0].roleId)
-      })
-      .catch(err => console.log(err.message))
-    }
-  }
-
-  console.log('user role', userRole)
 
   const router = useRouter()
 
