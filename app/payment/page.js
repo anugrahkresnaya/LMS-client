@@ -31,7 +31,7 @@ export default function Payment() {
   return(
     <div className="min-h-screen">
       {transaction_status === 'settlement' && (
-        <div>
+        <div className="pb-10">
           <Image 
             src={purchaseSuccess}
             alt="purchase success"
@@ -42,8 +42,8 @@ export default function Payment() {
           <h1 className="font-bold text-5xl text-center">You can check your course now</h1>
         </div>
       )}
-      {transaction_status === 'pending' && (
-        <div>
+      {transaction_status !== 'settlement' && (
+        <div className="pb-10">
           <Image 
             src={purchasePending}
             alt="purchase pending"
@@ -51,7 +51,7 @@ export default function Payment() {
             height={800}
             className="flex justify-center mx-auto"
           />
-          <h1 className="font-bold text-5xl text-center">Your purchased pending! You should retry to buy the course again</h1>
+          <h1 className="font-bold text-5xl text-center mb-5">Your purchased pending! You should retry to buy the course again</h1>
           <p className="text-xl text-center">Or if you already purchased the course and didnt get the course access. try contact the admin.</p>
         </div>
       )}
