@@ -6,7 +6,7 @@ import CourseList from '@/components/courseList'
 import imageCourse from '@/public/course-default.jpg'
 
 export default function Home() {
-  const { state: { user }, dispatch } = useContext(Context)
+  const { state: { user } } = useContext(Context)
   const [userData, setUserData] = useState([])
   const [listData, setListData] = useState([])
 
@@ -20,7 +20,6 @@ export default function Home() {
         }
       })
       .then(res => {
-        console.log('ini', res)
         setUserData(res.data.data[0])
       })
       .catch(err => console.log(err.message))
@@ -60,7 +59,7 @@ export default function Home() {
         <div className="hero-overlay bg-opacity-60"></div>
         <div className="hero-content text-center text-neutral-content">
           <div className="max-w-md">
-            <h1 className="mb-5 text-5xl font-bold">{isLoggedIn ? `Hello, ${userData?.firstName || 'anonymous'} ${userData?.lastName}` : 'Hello there!'}</h1>
+            <h1 className="mb-5 text-5xl font-bold">{isLoggedIn ? `Hello, ${userData?.firstName || 'anonymous'} ${userData?.lastName || ''}` : 'Hello there!'}</h1>
             <p className="mb-5">Welcome to Oceanz! You can either learn from the course or contribute to upload your course in here.</p>
           </div>
         </div>

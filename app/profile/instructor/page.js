@@ -13,11 +13,11 @@ export default function Instructor() {
   return (
     <div className='min-h-screen bg-base-200 pt-20'>
       <div className="hero">
-        <div className="hero-content flex-col lg:flex-row-reverse">
+        <div className="hero-content flex-col lg:flex-row-reverse max-[1324px]:flex-wrap">
           <Image src={instructorPhoto} alt='instructor' className="max-w-sm rounded-lg shadow-2xl" />
           <div>
             <h1 className="text-5xl font-bold">Become an Instructor!</h1>
-            <p className="sm:w-[900px] py-6">
+            <p className="py-6">
               We believe that everyone has something valuable to teach, and we&apos;re thrilled to offer you a unique opportunity 
               to contribute to our growing comminity of instructors/educators. Whether you&apos;re an expert in a specific field 
               or simply passionate about sharing your skills, you can now effortlessly upload your courses – either free or 
@@ -31,7 +31,7 @@ export default function Instructor() {
         </div>
       </div>
       <h1 className='font-bold text-5xl text-center mt-20'>FAQ</h1>
-      <div className='sm:w-[720px] mt-10 mx-auto'>
+      <div className='min-[727px]:w-[720px] mt-10 pb-10 mx-auto'>
         <div className='mb-5'>
           <h1 className='font-bold text-xl'>How to get paid after user buy my course?</h1>
           <p>For now, we will directly contact to your email or mobile number to get your bank and account information and we will transfer it directly to your bank.</p>

@@ -129,6 +129,7 @@ export default function Profile() {
       dataState.id = user?.id
       dataState.role = user?.role
       dataState.user = user?.user
+      dataState.photoProfile = data.data?.photoProfile
       
       dispatch({
         type: "LOGIN",

@@ -71,7 +71,7 @@ const Course = ({params}) => {
     }
 
     getRatingData()
-  }, [api, courseData?.id, courseData.instructor, courseData.instructorId, orderData.id, params.slug, user?.id])
+  }, [api, courseData?.id, courseData?.instructor, courseData?.instructorId, orderData?.id, params?.slug, user?.id])
 
   const handleCheckout = async () => {
     Swal.fire({
@@ -120,15 +120,17 @@ const Course = ({params}) => {
     })
   }
 
+  console.log('rating data', ratingData)
+
   const renderRating = ratingData.map(item => {
     return(
         <Rating
-          key={item.id}
-          rating={item.value}
-          firstName={item.firstName}
-          lastName={item.lastName}
-          review={item.review}
-          photo={item.photoProfile}
+          key={item?.id}
+          rating={item?.value}
+          firstName={item?.firstName}
+          lastName={item?.lastName}
+          review={item?.review}
+          photo={item?.photoProfile}
         />
     )
   })
@@ -141,31 +143,31 @@ const Course = ({params}) => {
       <div className='flex flex-row justify-center mt-10'>
         <div className='flex-col w-[750px] bg-base-300 rounded-xl p-5 mb-5'>
           <div className='mb-5'>
-            <h1 className='font-bold text-4xl'>{courseData.title}</h1>
+            <h1 className='font-bold text-4xl'>{courseData?.title}</h1>
           </div>
           <div className='mb-5'>
             <h1 className='font-bold text-xl mb-2'>Description</h1>
-            <p>{courseData.description}</p>
+            <p>{courseData?.description}</p>
           </div>
           <div>
             <h1 className='font-bold text-xl mb-2'>Instructor</h1>
             <div className='flex'>
               <Image src={instructorData?.photoProfile || photo} width={100} height={100} alt='profile avatar' />
-              <h1 className='ml-5'>{`${instructorData.firstName} ${instructorData.lastName}` || 'anonymous'}</h1>
+              <h1 className='ml-5'>{`${instructorData?.firstName} ${instructorData?.lastName}` || 'anonymous'}</h1>
             </div>
           </div>
         </div>
         <div className='flex-col ml-20 bg-base-300 p-5 mb-5 rounded-xl'>
-          <h1 className='mb-5'>Price: {courseData.price === 0 ? 'FREE' : `Rp ${courseData.price}`}</h1>
-          <h1 className='mb-5'>Instructor: {`${instructorData.firstName} ${instructorData.lastName}` || 'anonymous'}</h1>
-          {user?.id === instructorData.id ? (
+          <h1 className='mb-5'>Price: {courseData?.price === 0 ? 'FREE' : `Rp ${courseData?.price}`}</h1>
+          <h1 className='mb-5'>Instructor: {`${instructorData?.firstName} ${instructorData?.lastName}` || 'anonymous'}</h1>
+          {user?.id === instructorData?.id ? (
             <div className='flex flex-col'>
               <Link className="btn btn-active btn-primary mb-5" href={`/learn/${params.slug}`}>Go to course</Link>
               <Link className="btn btn-active btn-primary mb-5" href={`/course/update-course/${params.slug}`}>Edit your course</Link>
             </div>
           ) : (
             <div className='flex flex-col'>
-              {(user?.id === orderData.userId && orderData.status === 'settlement') ? (
+              {(user?.id === orderData?.userId && orderData?.status === 'settlement') ? (
                 <div className="flex flex-col">
                   <Link className="btn btn-active btn-primary mb-5" href={`/learn/${params.slug}`}>Go to course</Link>
                   <Link className="btn btn-active btn-primary" href={`/course/rating/${params.slug}`}>Give rating</Link>
