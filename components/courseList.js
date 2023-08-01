@@ -17,7 +17,7 @@ const CourseList = ({ title, price, image, params, isLoggedIn }) => {
           <h2 className="card-title">{title}</h2>
         </Link>
         <p></p>
-        <h3>{price || 'Free'}</h3>
+        <h3>{price !== 0 ? `Rp ${price}` : 'Free'}</h3>
         {isLoggedIn && (
           <div className="card-actions justify-end">
             <Link className="btn btn-primary" href={`/course/${params}`}>Details</Link>
