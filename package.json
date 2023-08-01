@@ -19,7 +19,7 @@
     "file-loader": "^6.2.0",
     "next": "13.4.2",
     "next-auth": "^4.22.1",
-    "pdfjs-dist": "^3.8.162",
+    "pdfjs-dist": "^3.8.179",
     "postcss": "8.4.23",
     "react": "18.2.0",
     "react-dom": "18.2.0",

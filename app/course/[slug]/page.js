@@ -153,13 +153,13 @@ const Course = ({params}) => {
             <h1 className='font-bold text-xl mb-2'>Instructor</h1>
             <div className='flex'>
               <Image src={instructorData?.photoProfile || photo} width={100} height={100} alt='profile avatar' />
-              <h1 className='ml-5'>{`${instructorData?.firstName} ${instructorData?.lastName}` || 'anonymous'}</h1>
+              <h1 className='ml-5'>{`${instructorData?.firstName || 'anonymous'} ${instructorData?.lastName || ''}`}</h1>
             </div>
           </div>
         </div>
         <div className='flex-col ml-20 bg-base-300 p-5 mb-5 rounded-xl'>
           <h1 className='mb-5'>Price: {courseData?.price === 0 ? 'FREE' : `Rp ${courseData?.price}`}</h1>
-          <h1 className='mb-5'>Instructor: {`${instructorData?.firstName} ${instructorData?.lastName}` || 'anonymous'}</h1>
+          <h1 className='mb-5'>Instructor: {`${instructorData?.firstName || 'anonymous'} ${instructorData?.lastName || ''}`}</h1>
           {user?.id === instructorData?.id ? (
             <div className='flex flex-col'>
               <Link className="btn btn-active btn-primary mb-5" href={`/learn/${params.slug}`}>Go to course</Link>
