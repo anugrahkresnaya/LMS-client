@@ -132,7 +132,7 @@ const Learn = ({params}) => {
 
   const renderComment = commentData.map(item => {
     const handleDelete = async () => {
-      await axios.delete(`${api}/comment/${item?.id}`)
+      await axios.delete(`${api}/comment/delete/${item?.id}`)
       .then(res => {
         console.log(res)
         Swal.fire({

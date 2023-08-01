@@ -179,7 +179,7 @@ export default function Dashboard() {
 
   const handleDeleteComment = async (id) => {
     try {
-      await axios.delete(`${api}/rating/delete/${id}`, {
+      await axios.delete(`${api}/comment/delete/${id}`, {
         headers: {
           Authorization: `Bearer ${user.accessToken}`
         }
