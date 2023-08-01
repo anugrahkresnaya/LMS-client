@@ -132,7 +132,11 @@ const Learn = ({params}) => {
 
   const renderComment = commentData.map(item => {
     const handleDelete = async () => {
-      await axios.delete(`${api}/comment/delete/${item?.id}`)
+      await axios.delete(`${api}/comment/delete/${item?.id}`, {
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`
+        }
+      })
       .then(res => {
         console.log(res)
         Swal.fire({
@@ -230,8 +234,8 @@ const Learn = ({params}) => {
             <p>{courseData.description}</p>
             <div className="mt-10">
               <h1 className="font-bold text-xl">instructor</h1>
-              <Image src={instructorData?.photoProfile || photo} width={100} height={100} alt='profile avatar' />
-              <p>{`${instructorData.firstName} ${instructorData.lastName}` || 'anonymous'}</p>
+              <Image src={instructorData?.photoProfile || profile} width={100} height={100} alt='profile avatar' />
+              <p>{`${instructorData?.firstName || 'anonymous'} ${instructorData?.lastName || ''}`}</p>
             </div>
           </div>
         )}
