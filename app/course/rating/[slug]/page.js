@@ -17,21 +17,6 @@ export default function RatingForm({params}) {
 
   const api = process.env.NEXT_PUBLIC_ORIGIN_API
 
-  useEffect(() => {
-    const getUserData = () => {
-      axios.get(`${api}/user/${user?.id}`)
-      .then(res => {
-        console.log('result', res.data.data)
-        setUserData(res.data.data[0])
-      })
-      .catch(error => {
-        console.log(error)
-      })
-    }
-
-    getUserData()
-  }, [user?.id])
-
   const handleSubmit = async (e) => {
     e.preventDefault()
     axios.post(`${api}/rating/${params.slug}`, {
@@ -45,7 +30,6 @@ export default function RatingForm({params}) {
       }
     })
     .then(res => {
-      console.log('result', res)
       Swal.fire({
         position: "center",
         title: "Successfull!",
