@@ -162,10 +162,29 @@ const Learn = ({params}) => {
       })
     }
 
+    console.log('type', typeof item.createdAt)
+    const date = new Date(item.createdAt)
+    
+    const formatDate = (date) => {
+      const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+      const dayOfWeek = daysOfWeek[date.getDay()];
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = months[date.getMonth()];
+      const year = date.getFullYear().toString();
+      const hour = date.getHours().toString().padStart(2, '0');
+      const minute = date.getMinutes().toString().padStart(2, '0');
+
+      return `${dayOfWeek}, ${day} ${month} ${year} ${hour}:${minute}`;
+    }
+
+    const formattedDate = formatDate(date)
+
     return(
-      <div key={item?.id} className="relative grid grid-cols-1 gap-4 p-4 mb-8 rounded-lg bg-base-200 shadow-lg">
+      <div key={item?.userData?.user.id} className="relative grid grid-cols-1 gap-4 p-4 mb-8 rounded-lg bg-base-200 shadow-lg">
         <div className="relative flex gap-4">
-          <Image src={item?.image || profile} 
+          <Image src={item?.userData?.user.photoProfile || profile} 
             className="relative rounded-lg -top-8 -mb-4 bg-base-200"
             alt="profile"
             width={80}
@@ -173,12 +192,13 @@ const Learn = ({params}) => {
           />
           <div className="flex flex-col w-full">
             <div className="flex flex-row justify-between">
-              <p className="relative text-xl whitespace-nowrap truncate overflow-hidden">{item?.firstName} {item?.lastName}</p>
-              {item.userId === user?.id && (
+              <p className="relative text-xl whitespace-nowrap truncate overflow-hidden">{item?.userData?.user.firstName} {item?.userData?.user.lastName}</p>
+              {item?.userData?.user.id === user?.id && (
                 <button onClick={handleDelete} className="text-gray-500 text-xl" href="#"><FaTrash /></button>
               )}
             </div>
-              <p className="text-gray-400 text-sm">20 April 2022, at 14:88 PM</p>
+              {/* <p className="text-gray-400 text-sm">20 April 2022, at 14:88 PM</p> */}
+              <p className="text-gray-400 text-sm">{formattedDate}</p>
             </div>
           </div>
         <p className="-mt-4 text-gray-500">{item.comment}</p>

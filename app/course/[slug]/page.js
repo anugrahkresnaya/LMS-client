@@ -123,14 +123,15 @@ const Course = ({params}) => {
   console.log('rating data', ratingData)
 
   const renderRating = ratingData.map(item => {
+    console.log('user id', item)
     return(
         <Rating
           key={item?.id}
           rating={item?.value}
-          firstName={item?.firstName}
-          lastName={item?.lastName}
+          firstName={item?.userData?.user.firstName}
+          lastName={item?.userData?.user.lastName}
           review={item?.review}
-          photo={item?.photoProfile}
+          photo={item?.userData?.user.photoProfile}
         />
     )
   })
