@@ -14,7 +14,6 @@ export default function Payment() {
   const order_id = searchParams.get('order_id')
   const transaction_status = searchParams.get('transaction_status')
 
-  console.log(order_id, transaction_status)
   useEffect(() => {
     handleUpdateOrderStatus()
   }, [])

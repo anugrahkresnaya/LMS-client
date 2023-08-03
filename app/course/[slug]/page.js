@@ -23,8 +23,6 @@ const Course = ({params}) => {
 
   const api = process.env.NEXT_PUBLIC_ORIGIN_API
 
-  console.log('api', api)
-
   useEffect(() => {
     const getCourseData = () => {
       axios.get(`${api}/course/${params.slug}`)
@@ -64,7 +62,6 @@ const Course = ({params}) => {
     const getRatingData = () => {
       axios.get(`${api}/ratingsBySlug/${params.slug}`)
       .then(res => {
-        console.log('rating data', res.data)
         setRatingData(res.data.data)
       })
       .catch(error => console.log('rating API: ', error))
@@ -118,10 +115,7 @@ const Course = ({params}) => {
     })
   }
 
-  console.log('rating data', ratingData)
-
   const renderRating = ratingData.map(item => {
-    console.log('user id', item)
     return(
         <Rating
           key={item?.id}
