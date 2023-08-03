@@ -120,9 +120,6 @@ export default function Profile() {
         credentials: 'include'
       })
 
-      console.log('data state', data)
-      console.log('type', typeof data)
-
       const dataState = data.data
 
       dataState.accessToken = user?.accessToken

@@ -66,7 +66,6 @@ const Learn = ({params}) => {
     const getUserData = () => {
       axios.get(`${api}/user/${user?.id}`)
       .then(res => {
-        console.log('result', res.data.data)
         setUserData(res.data.data[0])
       })
       .catch(error => {
@@ -79,7 +78,6 @@ const Learn = ({params}) => {
     const getCommentData = () => {
       axios.get(`${api}/comments/${params?.slug}`)
       .then(res => {
-        console.log('comment', res.data.data)
         setCommentData(res.data.data)
       })
       .catch(err => {
@@ -159,7 +157,6 @@ const Learn = ({params}) => {
       })
     }
 
-    console.log('type', typeof item.createdAt)
     const date = new Date(item.createdAt)
     
     const formatDate = (date) => {

@@ -39,7 +39,6 @@ export default function Dashboard() {
   const getUserData = () => {
     axios.get(`${api}/user/${user?.id}`)
     .then(res => {
-      console.log('result', res.data.data[0])
       setUserRole(res.data.data[0].roleId)
     })
     .catch(error => {
@@ -84,7 +83,6 @@ export default function Dashboard() {
   const getOrderList = () => {
     axios.get(`${api}/orders`)
     .then(res => {
-      console.log('comment list', res.data.data)
       setOrderList(res.data.data)
     })
   }

@@ -36,7 +36,6 @@ const Course = () => {
     try {
       axios.get(`${api}/searchCourses?keyword=${keyword}`)
       .then(res => {
-        console.log('search', res)
         setSearchData(res.data)
         setLoading(false)
       })
@@ -56,8 +55,6 @@ const Course = () => {
   }
 
   const isLoggedIn = user?.accessToken
-
-  console.log('search data', searchData)
 
   const renderList = listData.map(list => {
     return (

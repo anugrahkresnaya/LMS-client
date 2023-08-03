@@ -25,7 +25,6 @@ const CourseCreate = ({params}) => {
 
   const handleImage = (e) => {
     let imageFile = e.target.files[0]
-    console.log('image file', imageFile)
     setImagePreview(imageFile)
   }
 
