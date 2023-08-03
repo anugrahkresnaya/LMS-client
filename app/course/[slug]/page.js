@@ -86,8 +86,6 @@ const Course = ({params}) => {
       if (result.isConfirmed) {
         axios.post(`${api}/course/${courseData.id}/order`, {
           userId: user?.id,
-          instructorId: instructorData?.id,
-          slug: params?.slug
         }, {
           headers: {
             Authorization: `Bearer ${user?.accessToken}`
@@ -128,10 +126,10 @@ const Course = ({params}) => {
         <Rating
           key={item?.id}
           rating={item?.value}
-          firstName={item?.userData?.user.firstName}
-          lastName={item?.userData?.user.lastName}
+          firstName={item?.userData?.firstName}
+          lastName={item?.userData?.lastName}
           review={item?.review}
-          photo={item?.userData?.user.photoProfile}
+          photo={item?.userData?.photoProfile}
         />
     )
   })
@@ -168,7 +166,7 @@ const Course = ({params}) => {
             </div>
           ) : (
             <div className='flex flex-col'>
-              {(user?.id === orderData?.userId && orderData?.status === 'settlement') ? (
+              {(user?.id === orderData?.userData?.customerId && orderData?.status === 'settlement') ? (
                 <div className="flex flex-col">
                   <Link className="btn btn-active btn-primary mb-5" href={`/learn/${params.slug}`}>Go to course</Link>
                   <Link className="btn btn-active btn-primary" href={`/course/rating/${params.slug}`}>Give rating</Link>
