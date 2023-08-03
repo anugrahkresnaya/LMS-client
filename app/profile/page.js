@@ -73,14 +73,14 @@ export default function Profile() {
   }
 
   const renderEnroll = enrolledData?.map(item => {
-    const words = item?.slug.split("-");
+    const words = item?.courseData.slug.split("-");
     const capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
     const capitalizedTitle = capitalizedWords.join(" ")
 
     return(
       <div key={item?.id} className="card w-96 bg-base-300 shadow-xl mt-5 mr-5">
         <div className="card-body">
-          <Link href={`/course/${item?.slug}`}>
+          <Link href={`/course/${item?.courseData?.slug}`}>
             <h1 className='font-bold text-xl text-center'>{capitalizedTitle}</h1>
           </Link>
         </div>
@@ -170,6 +170,7 @@ export default function Profile() {
         showConfirmButton: false,
         timer: 2000,
       })
+      router.push("/")
     } catch (error) {
       console.log(error)
       Swal.fire({

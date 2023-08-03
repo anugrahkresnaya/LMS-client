@@ -293,12 +293,12 @@ export default function Dashboard() {
           <div className="flex items-center space-x-3">
             <div className="avatar">
               <div className="mask mask-squircle w-12 h-12">
-                <Image src={list.photoProfile || photo.src} alt="Avatar" width={48} height={48} />
+                <Image src={list?.userData?.photoProfile || photo.src} alt="Avatar" width={48} height={48} />
               </div>
             </div>
             <div>
-              <div className="font-bold">{`${list.firstName} ${list.lastName}`}</div>
-              <div className="text-sm opacity-50">{`user id: ${list.userId}`}</div>
+              <div className="font-bold">{`${list?.userData.firstName || 'Anonymous'} ${list?.userData.lastName || ''}`}</div>
+              <div className="text-sm opacity-50">{`user id: ${list?.userData.id}`}</div>
             </div>
           </div>
         </td>
@@ -322,12 +322,12 @@ export default function Dashboard() {
           <div className="flex items-center space-x-3">
             <div className="avatar">
               <div className="mask mask-squircle w-12 h-12">
-                <Image src={list.image || photo.src} alt="Avatar" width={48} height={48} />
+                <Image src={list?.userData.photoProfile || photo.src} alt="Avatar" width={48} height={48} />
               </div>
             </div>
             <div>
-              <div className="font-bold">{`${list.firstName} ${list.lastName}`}</div>
-              <div className="text-sm opacity-50">{`user id: ${list.userId}`}</div>
+              <div className="font-bold">{`${list?.userData.firstName || 'Anonymous'} ${list.lastName || ''}`}</div>
+              <div className="text-sm opacity-50">{`user id: ${list?.userData.id}`}</div>
             </div>
           </div>
         </td>
@@ -346,11 +346,11 @@ export default function Dashboard() {
     return (
       <tr key={list.id}>
         <td>{list.id}</td>
-        <td>{list.courseId}</td>
-        <td>{list.userId}</td>
-        <td>{list.instructorId}</td>
-        <td>{list.slug}</td>
-        <td>{list.amount}</td>
+        <td>{list?.courseData.courseId}</td>
+        <td>{list?.userData.customerId}</td>
+        <td>{list?.courseData.instructorId}</td>
+        <td>{list?.courseData.slug}</td>
+        <td>{list?.courseData.price}</td>
         <td>{list.transactionId}</td>
         <td>{list.status}</td>
         <td>{list.token}</td>
