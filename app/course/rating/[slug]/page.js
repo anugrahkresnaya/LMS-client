@@ -1,6 +1,6 @@
 'use client'
 import axios from "axios"
-import { useEffect, useState, useContext } from "react"
+import { useState, useContext } from "react"
 import { Context } from "@/context"
 import Swal from "sweetalert2"
 import { useRouter } from "next/navigation"
@@ -11,7 +11,6 @@ export default function RatingForm({params}) {
   } = useContext(Context)
   const [selected, setSelected] = useState(5)
   const [review, setReview] = useState('')
-  const [userData, setUserData] = useState([])
 
   const router = useRouter()
 

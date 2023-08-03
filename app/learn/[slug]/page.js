@@ -106,9 +106,6 @@ const Learn = ({params}) => {
     await axios.post(`${api}/comment/${params?.slug}`, {
       userId: user?.id,
       comment_content: commentInput,
-      firstName: userData?.firstName,
-      lastName: userData?.lastName,
-      image: userData?.photoProfile,
     }, {
       headers: {
         Authorization: `Bearer ${user?.accessToken}`
@@ -182,9 +179,9 @@ const Learn = ({params}) => {
     const formattedDate = formatDate(date)
 
     return(
-      <div key={item?.userData?.user.id} className="relative grid grid-cols-1 gap-4 p-4 mb-8 rounded-lg bg-base-200 shadow-lg">
+      <div key={item?.id} className="relative grid grid-cols-1 gap-4 p-4 mb-8 rounded-lg bg-base-200 shadow-lg">
         <div className="relative flex gap-4">
-          <Image src={item?.userData?.user.photoProfile || profile} 
+          <Image src={item?.userData?.photoProfile || profile} 
             className="relative rounded-lg -top-8 -mb-4 bg-base-200"
             alt="profile"
             width={80}
@@ -192,12 +189,11 @@ const Learn = ({params}) => {
           />
           <div className="flex flex-col w-full">
             <div className="flex flex-row justify-between">
-              <p className="relative text-xl whitespace-nowrap truncate overflow-hidden">{item?.userData?.user.firstName} {item?.userData?.user.lastName}</p>
-              {item?.userData?.user.id === user?.id && (
+              <p className="relative text-xl whitespace-nowrap truncate overflow-hidden">{item?.userData?.firstName || 'Anonymous'} {item?.userData?.lastName || ''}</p>
+              {item?.userData?.id === user?.id && (
                 <button onClick={handleDelete} className="text-gray-500 text-xl" href="#"><FaTrash /></button>
               )}
             </div>
-              {/* <p className="text-gray-400 text-sm">20 April 2022, at 14:88 PM</p> */}
               <p className="text-gray-400 text-sm">{formattedDate}</p>
             </div>
           </div>
