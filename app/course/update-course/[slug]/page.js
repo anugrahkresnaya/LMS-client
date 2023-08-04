@@ -72,7 +72,7 @@ const CourseUpdate= ({params}) => {
         position: "center",
         title: "Error!",
         icon: "error",
-        text: "Course upload failed",
+        text: error?.response?.data?.message || "Course update failed",
         showConfirmButton: true,
       })
       setLoading(false)
