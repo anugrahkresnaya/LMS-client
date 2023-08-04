@@ -33,6 +33,11 @@ const ResetPassword = ({params}) => {
       })
       router.push('/signin')
     })
+    .catch(error => {
+      const errMsg = error.response?.data.errors[0].msg
+      Swal.fire('error', errMsg, 'error')
+      console.log('reset', error)
+    })
   }
 
   return (
