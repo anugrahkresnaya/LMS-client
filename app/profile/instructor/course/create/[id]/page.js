@@ -70,9 +70,9 @@ const CourseCreate = ({params}) => {
       console.log(error)
       Swal.fire({
         position: "center",
-        title: "Error!",
+        title: "Failed!",
         icon: "error",
-        text: "Course upload failed",
+        text: error?.response?.data?.message || "Course upload failed",
         showConfirmButton: true,
       })
       setLoading(false)
